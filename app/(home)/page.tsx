@@ -1,14 +1,5 @@
-import {
-  Box,
-  Button,
-  ButtonBase,
-  Divider,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Cube from "./_component/Cube";
-import KeyboardDoubleArrowDownRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowDownRounded";
 import DownArrow from "./_component/DownArrow";
 import Category from "./_component/Category";
 

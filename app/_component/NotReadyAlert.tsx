@@ -43,7 +43,7 @@ export default function NotReadyAlert(props: INotReadyAlertProps) {
 }
 
 const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children: ReactElement<any, any> },
+  props: TransitionProps & { children: ReactElement },
   ref: Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
