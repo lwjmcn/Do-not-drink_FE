@@ -1,20 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 const Cube = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [isMouseActive, setIsMouseActive] = useState(false);
-  const [prevRotationX, setPrevRotationX] = useState(0);
-  const [prevRotationY, setPrevRotationY] = useState(0);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // camera
+    // scene
     const scene = new THREE.Scene();
+    //camera
     const camera = new THREE.PerspectiveCamera(
       75,
       mount.clientWidth / mount.clientHeight,
@@ -22,10 +21,17 @@ const Cube = () => {
       5
     );
     camera.position.z = 2;
+    //control
+    const controls = new OrbitControls(camera, mount);
+    controls.enableDamping = true;
+    controls.target.set(0, 0, 0);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.update();
+    //renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
-
     mount.appendChild(renderer.domElement);
 
     // light
@@ -40,66 +46,64 @@ const Cube = () => {
       specular: 0x44ff44,
     });
     const cube = new THREE.Mesh(geometry, materials);
-    // continuous rotation
-    cube.rotation.x = prevRotationX;
-    cube.rotation.y = prevRotationY;
     scene.add(cube);
-
+    //edge
     const edgesGeometry = new THREE.EdgesGeometry(geometry);
     const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
     const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
     cube.add(edges);
 
-    // touch/drags interaction
-    let startX = 0;
-    let startY = 0;
-    let rotationX = prevRotationX;
-    let rotationY = prevRotationY;
-
-    const onTouchStart = (e: TouchEvent) => {
-      const { clientX, clientY } = e.touches[0];
-      startX = clientX;
-      startY = clientY;
-      setIsMouseActive(true);
-    };
-    mount.addEventListener("touchstart", onTouchStart);
-
-    const onTouchMove = (e: TouchEvent) => {
-      const { clientX, clientY } = e.touches[0];
-      const deltaX = ((clientX - startX) / window.innerWidth) * 5;
-      const deltaY = ((clientY - startY) / window.innerHeight) * 5;
-      rotationX = prevRotationX + deltaY;
-      rotationY = prevRotationY + deltaX;
-      setIsMouseActive(true);
-    };
-    mount.addEventListener("touchmove", onTouchMove);
-
-    const onTouchEnd = () => {
-      setIsMouseActive(false);
-      setPrevRotationX(rotationX);
-      setPrevRotationY(rotationY);
-    };
-    mount.addEventListener("touchend", onTouchEnd);
-
     // animation
-    const animate = () => {
-      if (isMouseActive) {
-        cube.rotation.x = Math.max(-0.5, Math.min(0.5, rotationX)); // updown rotation should be less than half
-        cube.rotation.y = rotationY;
-        requestAnimationFrame(animate);
-      }
+    let resetActive = false;
 
+    const onStart = () => {
+      controls.minAzimuthAngle = -Infinity;
+      controls.maxAzimuthAngle = Infinity;
+      controls.minPolarAngle = 0;
+      controls.maxPolarAngle = Math.PI / 2;
+      resetActive = false;
+    };
+    const onEnd = () => {
+      resetActive = true;
+    };
+    controls.addEventListener("start", onStart);
+    controls.addEventListener("end", onEnd);
+
+    const smoothReset = () => {
+      let alpha = controls.getAzimuthalAngle();
+      let beta = controls.getPolarAngle() - Math.PI / 2;
+
+      // close to 0
+      if (Math.abs(alpha) < 0.001) alpha = 0;
+      if (Math.abs(beta) < 0.001) beta = 0;
+
+      // smooth change
+      controls.minAzimuthAngle = 0.95 * alpha;
+      controls.maxAzimuthAngle = controls.minAzimuthAngle;
+
+      controls.minPolarAngle = Math.PI / 2 + 0.95 * beta;
+      controls.maxPolarAngle = controls.minPolarAngle;
+
+      // reached 0
+      if (alpha == 0 && beta == 0) onStart();
+    };
+
+    // rendering
+    const animationLoop = () => {
+      if (resetActive) smoothReset();
+
+      controls.update();
       renderer.render(scene, camera);
     };
-    animate();
+    renderer.setAnimationLoop(animationLoop);
 
     return () => {
-      mount.removeEventListener("touchstart", onTouchStart); // 리스너 제거
-      mount.removeEventListener("touchmove", onTouchMove); // 리스너 제거
-      mount.removeEventListener("touchend", onTouchEnd); // 리스너 제거
+      controls.removeEventListener("start", onStart);
+      controls.removeEventListener("end", onEnd);
       mount.removeChild(renderer.domElement); // DOM에서 렌더러 요소 제거
     };
-  }, [isMouseActive]);
+  }, []);
+
   return (
     <div
       ref={mountRef}
