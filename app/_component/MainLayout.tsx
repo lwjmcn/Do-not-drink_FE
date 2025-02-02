@@ -1,6 +1,6 @@
 "use client";
 
-import { CssBaseline, Box, alpha } from "@mui/material";
+import { CssBaseline, Box } from "@mui/material";
 import AppTheme from "public/style/AppTheme";
 import Copyright from "./Copyright";
 
