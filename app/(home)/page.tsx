@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import Cube from "./_component/Cube";
 import DownArrow from "./_component/DownArrow";
 import Category from "./_component/Category";
+import Carousel from "./_component/Carousel";
 
 const Home = () => {
   const money = 500000;
@@ -35,7 +35,7 @@ const Home = () => {
           }}
         >
           <Typography variant="h1">{money.toLocaleString()}</Typography>
-          <Cube />
+          <Carousel />
           <Stack direction="row" spacing={2} alignItems={"center"}>
             <Stack direction="row" alignItems={"center"}>
               <Typography variant="h2">👍</Typography>

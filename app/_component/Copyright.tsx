@@ -4,7 +4,11 @@ import Typography from "@mui/material/Typography";
 
 export default function Copyright() {
   return (
-    <Typography variant="body2" align="center" sx={{ color: "text.secondary" }}>
+    <Typography
+      variant="body2"
+      align="center"
+      sx={{ color: "text.secondary", padding: 2 }}
+    >
       {"Copyright © "}
       <Link color="inherit" href="https://github.com/lwjmcn">
         Do Not Drink
