@@ -13,9 +13,7 @@ const MainLayout = ({ children }: IMainLayoutProps) => {
     <AppTheme>
       <CssBaseline enableColorScheme />
       <Box component="main" sx={{ backgroundColor: "background.default" }}>
-        <Box minHeight={"calc(100vh - 40px)"} padding={2}>
-          {children}
-        </Box>
+        {children}
         <Copyright />
       </Box>
     </AppTheme>

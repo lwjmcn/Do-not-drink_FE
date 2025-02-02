@@ -5,7 +5,7 @@ import KeyboardDoubleArrowDownRoundedIcon from "@mui/icons-material/KeyboardDoub
 const DownArrow = () => {
   const slowScroll = () => {
     const startY = window.scrollY;
-    const endY = startY + window.innerHeight;
+    const endY = window.innerHeight;
     const duration = 500;
     const startTime = performance.now();
 
@@ -25,7 +25,7 @@ const DownArrow = () => {
   };
 
   return (
-    <Stack direction="column" alignItems={"center"}>
+    <Stack direction="column" alignItems={"center"} marginY={3}>
       <Typography variant="caption">카테고리별로 확인하기</Typography>
       <ButtonBase onClick={slowScroll}>
         <KeyboardDoubleArrowDownRoundedIcon

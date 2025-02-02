@@ -21,7 +21,7 @@ const Category = () => {
   ];
 
   return (
-    <Grid container spacing={2} rowGap={4}>
+    <Grid container spacing={2} rowGap={4} marginY={3}>
       {categories
         .sort((a, b) => b.amount - a.amount)
         .map((category, index) => (
