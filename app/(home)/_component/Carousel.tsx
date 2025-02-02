@@ -1,6 +1,6 @@
 "use client";
 import { Box, Button } from "@mui/material";
-import { JSX, memo, useEffect, useRef, useState } from "react";
+import { JSX, memo, useEffect, useState } from "react";
 import ArrowLeft from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowRight from "@mui/icons-material/ArrowForwardIosRounded";
 import Cube from "./Cube";
@@ -63,7 +63,7 @@ const Carousel = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [currentIndex, extendedList.length]);
+  }, [currentIndex]);
 
   return (
     <Box sx={{ width: "100vw", position: "relative", overflow: "hidden" }}>
@@ -139,4 +139,6 @@ const CarouselItem = memo(({ id }: { id: number }) => {
     </Box>
   );
 });
+CarouselItem.displayName = "CarouselItem";
+
 export default Carousel;
