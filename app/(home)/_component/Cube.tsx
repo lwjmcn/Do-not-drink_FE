@@ -6,6 +6,8 @@ import * as THREE from "three";
 const Cube = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isMouseActive, setIsMouseActive] = useState(false);
+  const [prevRotationX, setPrevRotationX] = useState(0);
+  const [prevRotationY, setPrevRotationY] = useState(0);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -17,115 +19,92 @@ const Cube = () => {
       75,
       mount.clientWidth / mount.clientHeight,
       0.1,
-      1000
+      5
     );
     camera.position.z = 2;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(0x000000, 0);
+
     mount.appendChild(renderer.domElement);
+
+    // light
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 2, 4);
+    scene.add(light);
 
     // cube
     const geometry = new THREE.BoxGeometry();
-    const materials = [
-      new THREE.MeshBasicMaterial({
-        color: 0xfff000,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0x00fff0,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0xf000ff,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0xfffff0,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0xfff0ff,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-      new THREE.MeshBasicMaterial({
-        color: 0xf0ffff,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.BackSide,
-      }),
-    ];
+    const materials = new THREE.MeshPhongMaterial({
+      color: 0x44aa88,
+      specular: 0x44ff44,
+    });
     const cube = new THREE.Mesh(geometry, materials);
-
+    // continuous rotation
+    cube.rotation.x = prevRotationX;
+    cube.rotation.y = prevRotationY;
     scene.add(cube);
 
-    const edgesGeometry = new THREE.EdgesGeometry(geometry); // 정육면체의 모서리를 정의하는 형상 생성
-    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xe999999 }); // 모서리의 색상을 설정
-    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial); // 모서리와 재질을 결합해 선(segment) 생성
-    cube.add(edges); // 정육면체에 모서리를 추가
+    const edgesGeometry = new THREE.EdgesGeometry(geometry);
+    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    cube.add(edges);
 
-    let mouseX = 0; // 마우스 X축 위치값 초기화
-    let mouseY = 0; // 마우스 Y축 위치값 초기화
+    // touch/drags interaction
+    let startX = 0;
+    let startY = 0;
+    let rotationX = prevRotationX;
+    let rotationY = prevRotationY;
 
-    // 창 크기 변경 시 카메라 및 렌더러의 크기 재설정
-    const onResize = () => {
-      camera.aspect = mount.clientWidth / mount.clientHeight; // 카메라의 종횡비를 새 창 크기에 맞게 조정
-      camera.updateProjectionMatrix(); // 카메라의 투영 매트릭스를 업데이트
-      renderer.setSize(mount.clientWidth, mount.clientHeight); // 렌더러의 크기를 새 창 크기에 맞게 조정
+    const onTouchStart = (e: TouchEvent) => {
+      const { clientX, clientY } = e.touches[0];
+      startX = clientX;
+      startY = clientY;
+      setIsMouseActive(true);
     };
-    window.addEventListener("resize", onResize); // 창 크기가 변경될 때 onResize 함수 실행
+    mount.addEventListener("touchstart", onTouchStart);
 
-    // 마우스 움직임에 따라 정육면체 회전을 제어하는 함수
-    const onMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event; // 마우스의 현재 위치를 가져옴
-      const { innerWidth, innerHeight } = window; // 창의 크기를 가져옴
-
-      mouseX = (clientX / innerWidth) * 2 - 1; // 마우스의 X 위치를 -1 ~ 1 범위로 변환
-      mouseY = -(clientY / innerHeight) * 2 + 1; // 마우스의 Y 위치를 -1 ~ 1 범위로 변환
-      setIsMouseActive(true); // 마우스가 움직이는 상태로 변경
+    const onTouchMove = (e: TouchEvent) => {
+      const { clientX, clientY } = e.touches[0];
+      const deltaX = ((clientX - startX) / window.innerWidth) * 5;
+      const deltaY = ((clientY - startY) / window.innerHeight) * 5;
+      rotationX = prevRotationX + deltaY;
+      rotationY = prevRotationY + deltaX;
+      setIsMouseActive(true);
     };
-    window.addEventListener("mousemove", onMouseMove); // 마우스가 움직일 때 onMouseMove 함수 실행
+    mount.addEventListener("touchmove", onTouchMove);
 
-    // 마우스가 화면을 벗어났을 때 호출되는 함수
-    const onMouseLeave = () => {
-      setIsMouseActive(false); // 마우스가 움직이지 않는 상태로 변경
+    const onTouchEnd = () => {
+      setIsMouseActive(false);
+      setPrevRotationX(rotationX);
+      setPrevRotationY(rotationY);
     };
-    window.addEventListener("mouseleave", onMouseLeave); // 마우스가 화면을 벗어날 때 onMouseLeave 함수 실행
+    mount.addEventListener("touchend", onTouchEnd);
 
-    // 애니메이션 함수
+    // animation
     const animate = () => {
-      requestAnimationFrame(animate); // 애니메이션 프레임을 요청
-
       if (isMouseActive) {
-        cube.rotation.x += (mouseY - cube.rotation.x) * 0.1; // 마우스의 Y축 움직임에 따라 정육면체의 X축 회전값 조정
-        cube.rotation.y += (mouseX - cube.rotation.y) * 0.1; // 마우스의 X축 움직임에 따라 정육면체의 Y축 회전값 조정
-      } else {
-        cube.rotation.x += 0.01; // 마우스가 움직이지 않으면 X축으로 천천히 회전
-        cube.rotation.y += 0.01; // 마우스가 움직이지 않으면 Y축으로 천천히 회전
+        cube.rotation.x = Math.max(-0.5, Math.min(0.5, rotationX)); // updown rotation should be less than half
+        cube.rotation.y = rotationY;
+        requestAnimationFrame(animate);
       }
 
-      renderer.render(scene, camera); // 장면을 렌더링하여 화면에 표시
+      renderer.render(scene, camera);
     };
-    animate(); // 애니메이션 함수 실행
+    animate();
 
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 및 DOM 요소 정리
     return () => {
-      window.removeEventListener("resize", onResize); // 리스너 제거
-      window.removeEventListener("mousemove", onMouseMove); // 리스너 제거
-      window.removeEventListener("mouseleave", onMouseLeave); // 리스너 제거
+      mount.removeEventListener("touchstart", onTouchStart); // 리스너 제거
+      mount.removeEventListener("touchmove", onTouchMove); // 리스너 제거
+      mount.removeEventListener("touchend", onTouchEnd); // 리스너 제거
       mount.removeChild(renderer.domElement); // DOM에서 렌더러 요소 제거
     };
   }, [isMouseActive]);
-  return <div ref={mountRef} style={{ width: "300px", height: "300px" }} />;
+  return (
+    <div
+      ref={mountRef}
+      style={{ width: "300px", height: "300px", touchAction: "none" }}
+    />
+  );
 };
 export default Cube;
