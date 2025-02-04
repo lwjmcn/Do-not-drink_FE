@@ -64,7 +64,7 @@ const Cube = () => {
 
     // gltf object
     const loader = new GLTFLoader();
-    loader.load("/gltf/quit.glb", (gltf) => {
+    loader.load("/gltf/milkbox_origin.glb", (gltf) => {
       const model = gltf.scene;
       model.scale.set(1.2, 1.2, 1.2);
       model.position.set(0, -0.1, 0);

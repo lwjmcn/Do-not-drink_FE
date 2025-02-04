@@ -4,6 +4,7 @@ import { JSX, memo, useEffect, useState } from "react";
 import ArrowLeft from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowRight from "@mui/icons-material/ArrowForwardIosRounded";
 import Cube from "./Cube";
+import AddFriend from "./AddFriend";
 
 interface IListData {
   id: number;
@@ -19,7 +20,7 @@ const list: IListData[] = [
   {
     id: 1,
     name: "예진",
-    el: <Box width={"200px"} height={"300px"} bgcolor={"red"} />,
+    el: <AddFriend />,
   },
   {
     id: 2,
