@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const Cube = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -13,45 +14,81 @@ const Cube = () => {
 
     // scene
     const scene = new THREE.Scene();
+    // scene.background = new THREE.Color(0xeeeeee);
     //camera
     const camera = new THREE.PerspectiveCamera(
-      75,
+      45,
       mount.clientWidth / mount.clientHeight,
       0.1,
       5
     );
     camera.position.z = 2;
+    //renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.setClearColor(0xffffff, 0);
+    mount.appendChild(renderer.domElement);
     //control
     const controls = new OrbitControls(camera, mount);
     controls.enableDamping = true;
+    controls.rotateSpeed = 0.2;
     controls.target.set(0, 0, 0);
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.update();
-    //renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.setClearColor(0x000000, 0);
-    mount.appendChild(renderer.domElement);
+
+    // // floor
+    // const floorGeometry = new THREE.PlaneGeometry(10, 10);
+    // const floorMaterial = new THREE.MeshPhongMaterial({
+    //   color: "background.default",
+    //   depthWrite: false,
+    // });
+    // const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    // floor.rotation.x = -Math.PI / 2;
+    // floor.position.y = -0.7;
+    // scene.add(floor);
+
+    // // cube
+    // const geometry = new THREE.BoxGeometry();
+    // const materials = new THREE.MeshPhongMaterial({
+    //   color: 0x44aa88,
+    //   specular: 0x44ff44,
+    // });
+    // const cube = new THREE.Mesh(geometry, materials);
+    // scene.add(cube);
+    // //edge
+    // const edgesGeometry = new THREE.EdgesGeometry(geometry);
+    // const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+    // const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    // cube.add(edges);
+
+    // gltf object
+    const loader = new GLTFLoader();
+    loader.load("/gltf/quit.glb", (gltf) => {
+      const model = gltf.scene;
+      model.scale.set(1.2, 1.2, 1.2);
+      model.position.set(0, -0.1, 0);
+      model.rotation.y = Math.PI / 6;
+      model.rotation.x = Math.PI / 10;
+      scene.add(model);
+    });
 
     // light
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 2, 4);
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(0, 5, -0.5);
     scene.add(light);
+    const frontLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    frontLight.position.set(0, 1, 3);
+    scene.add(frontLight);
+    // const ambientLight = new THREE.AmbientLight("background.default", 2.4); // floor color
+    // scene.add(ambientLight);
 
-    // cube
-    const geometry = new THREE.BoxGeometry();
-    const materials = new THREE.MeshPhongMaterial({
-      color: 0x44aa88,
-      specular: 0x44ff44,
-    });
-    const cube = new THREE.Mesh(geometry, materials);
-    scene.add(cube);
-    //edge
-    const edgesGeometry = new THREE.EdgesGeometry(geometry);
-    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-    const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-    cube.add(edges);
+    // // shadow
+    // renderer.shadowMap.enabled = true;
+    // cube.castShadow = true;
+    // floor.receiveShadow = true;
+    // light.castShadow = true;
+    // light.shadow.radius = 4;
 
     // animation
     let resetActive = false;
@@ -59,8 +96,8 @@ const Cube = () => {
     const onStart = () => {
       controls.minAzimuthAngle = -Infinity;
       controls.maxAzimuthAngle = Infinity;
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI / 2;
+      controls.minPolarAngle = Math.PI / 8;
+      controls.maxPolarAngle = Math.PI / 1.5;
       resetActive = false;
     };
     const onEnd = () => {
