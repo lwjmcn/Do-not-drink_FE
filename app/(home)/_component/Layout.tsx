@@ -3,6 +3,7 @@ import DownArrow from "./DownArrow";
 import Category from "./Category";
 import AddFriend from "./AddFriend";
 import Cube from "./Cube";
+import ReactionButton from "./ReactionButton";
 
 interface ILayoutProps {
   type: "me" | "friend" | "add";
@@ -39,12 +40,12 @@ const Layout = (props: ILayoutProps) => {
           {showCube ? <Cube filename="milkbox_origin.glb" /> : <AddFriend />}
           {props.type !== "add" && (
             <Stack direction="row" spacing={2} alignItems={"center"}>
-              <Stack direction="row" alignItems={"center"}>
-                <Typography variant="h2">👍</Typography>
-                <Typography variant="h5" width={"36px"} overflow={"hidden"}>
-                  {likes > 99 ? "99+" : likes}
-                </Typography>
-              </Stack>
+              <ReactionButton
+                isLike={true}
+                count={likes}
+                enabled={props.type === "friend"}
+              />
+
               <Button
                 variant="contained"
                 onClick={() => alert("한 입 먹기")}
@@ -58,12 +59,11 @@ const Layout = (props: ILayoutProps) => {
               >
                 <Typography variant="h5">한 입</Typography>
               </Button>
-              <Stack direction="row" alignItems={"center"}>
-                <Typography variant="h2">👎</Typography>
-                <Typography variant="h5" width={"36px"} overflow={"hidden"}>
-                  {dislikes > 99 ? "99+" : dislikes}
-                </Typography>
-              </Stack>
+              <ReactionButton
+                isLike={false}
+                count={dislikes}
+                enabled={props.type === "friend"}
+              />
             </Stack>
           )}
         </Box>
