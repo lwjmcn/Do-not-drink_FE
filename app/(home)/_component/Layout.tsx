@@ -14,11 +14,11 @@ const Layout = (props: ILayoutProps) => {
   const dislikes = 4;
 
   const layoutConfig = {
-    me: { title: money.toLocaleString(), showButton: true, showCube: true },
-    friend: { title: name + " 님", showButton: false, showCube: true },
-    add: { title: "", showButton: false, showCube: false },
+    me: { title: money.toLocaleString(), showCube: true },
+    friend: { title: name + " 님", showCube: true },
+    add: { title: "", showCube: false },
   };
-  const { title, showButton, showCube } = layoutConfig[props.type];
+  const { title, showCube } = layoutConfig[props.type];
 
   return (
     <Box width={"100vw"}>

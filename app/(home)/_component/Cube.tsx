@@ -142,7 +142,7 @@ const Cube = (props: ICubeProps) => {
       controls.removeEventListener("end", onEnd);
       mount.removeChild(renderer.domElement); // DOM에서 렌더러 요소 제거
     };
-  }, []);
+  }, [props.filename]);
 
   return (
     <div
