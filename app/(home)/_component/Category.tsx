@@ -1,11 +1,14 @@
 import { Grid, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const Category = () => {
+  const router = useRouter();
+
   const categories = [
     { name: "식당", amount: 320050 },
     { name: "월세", amount: 600000 },
     { name: "교통", amount: 55000 },
-    { name: "옷/패션", amount: 73000 },
+    { name: "옷·패션", amount: 73000 },
     { name: "연뮤", amount: 140000 },
     { name: "병원", amount: 45000 },
     { name: "보험", amount: 30000 },
@@ -27,6 +30,7 @@ const Category = () => {
         .map((category, index) => (
           <Grid
             key={index}
+            onClick={() => router.push(`/history/${category.name}`)}
             item
             xs={index < 3 ? 4 : 3}
             alignItems={"center"}
