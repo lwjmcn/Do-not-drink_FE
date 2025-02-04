@@ -1,39 +1,56 @@
 "use client";
 import { Box, Button } from "@mui/material";
-import { JSX, memo, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import ArrowLeft from "@mui/icons-material/ArrowBackIosNewRounded";
 import ArrowRight from "@mui/icons-material/ArrowForwardIosRounded";
-import Cube from "./Cube";
-import AddFriend from "./AddFriend";
+import Layout from "./Layout";
 
 interface IListData {
-  id: number;
+  index: number;
   name: string;
-  el: JSX.Element;
+  gltf: string;
+  percentage?: number;
 }
-const list: IListData[] = [
+
+const friends: IListData[] = [
   {
-    id: 0,
-    name: "로라",
-    el: <Cube />,
-  },
-  {
-    id: 1,
-    name: "예진",
-    el: <AddFriend />,
-  },
-  {
-    id: 2,
+    index: 2,
     name: "희주",
-    el: <Box width={"200px"} height={"200px"} bgcolor={"blue"} />,
+    gltf: "/milkbox.glb",
+    percentage: 50,
   },
   {
-    id: 3,
+    index: 3,
     name: "지원",
-    el: <Box width={"200px"} height={"200px"} bgcolor={"green"} />,
+    gltf: "/milkbox.glb",
+    percentage: 30,
   },
 ];
-const extendedList = [list[list.length - 1], ...list, list[0]];
+// for infinite carousel
+// const extendedList = [friends[friends.length - 1], ...friends, friends[0]];
+// const extendedList = [<AddFriend/>, <Cube/>, ...friends, <AddFriend/>, <Cube/>];
+// const extendedList = [
+//   { id: 0, el: <Layout type="add" /> },
+//   { id: 1, el: <Layout type="me" /> },
+//   ...friends.map((friend, i) => {
+//     return { id: 2 + i, el: <Layout type="friend" /> };
+//   }),
+//   { id: friends.length + 2, el: <Layout type="add" /> },
+//   { id: friends.length + 3, el: <Layout type="me" /> },
+// ];
+interface IExtendedList {
+  id: number;
+  type: "add" | "me" | "friend";
+}
+const extendedList: IExtendedList[] = [
+  { id: 0, type: "add" },
+  { id: 1, type: "me" },
+  ...friends.map((friend, i) => {
+    return { id: 2 + i, type: "friend" as const };
+  }),
+  { id: friends.length + 2, type: "add" },
+  { id: friends.length + 3, type: "me" },
+];
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -47,6 +64,7 @@ const Carousel = () => {
     setTransition(true);
     setCurrentIndex((prev) => (prev + 1) % extendedList.length);
   };
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (currentIndex === 0) {
@@ -61,26 +79,35 @@ const Carousel = () => {
       }, 500);
     }
     console.log("currentIndex", currentIndex);
+
     return () => {
       clearTimeout(timeoutId);
     };
   }, [currentIndex]);
+
+  // const visiblePages = useMemo(() => {
+  //   return extendedList.filter(
+  //     (_, index) =>
+  //       Math.abs(index - currentIndex) <= 1 ||
+  //       (index === 0 && currentIndex === extendedList.length - 1) ||
+  //       (index === extendedList.length - 1 && currentIndex === 0)
+  //   );
+  // }, [currentIndex]);
 
   return (
     <Box sx={{ width: "100vw", position: "relative", overflow: "hidden" }}>
       {/* carousel */}
       <Box
         sx={{
-          display: "flex",
+          display: "-webkit-box",
           transition: transition ? "transform 0.5s ease-in-out" : "none",
-          transform: `translateX(-${currentIndex * 100}%)`,
+          transform: `translateX(-${currentIndex * 100}vw)`,
         }}
       >
-        {Array(extendedList.length)
-          .fill(0)
-          .map((_, id) => (
-            <CarouselItem key={id} id={id} />
-          ))}
+        {extendedList.map((page) => {
+          console.log(page.id);
+          return <CarouselItem key={page.id} index={page.id} />;
+        })}
       </Box>
 
       {/* left/right */}
@@ -90,7 +117,7 @@ const Carousel = () => {
         sx={{
           position: "absolute",
           left: 0,
-          top: "50%",
+          top: "50vh",
           transform: "translateY(-50%)",
           ":hover": {
             backgroundColor: "transparent",
@@ -106,7 +133,7 @@ const Carousel = () => {
         sx={{
           position: "absolute",
           right: 0,
-          top: "50%",
+          top: "50vh",
           transform: "translateY(-50%)",
           ":hover": {
             backgroundColor: "transparent",
@@ -120,24 +147,9 @@ const Carousel = () => {
   );
 };
 
-const CarouselItem = memo(({ id }: { id: number }) => {
+const CarouselItem = memo(({ index }: { index: number }) => {
   return (
-    <Box
-      key={id}
-      sx={{
-        minWidth: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        p: 2,
-        bgcolor: "background.default",
-        maxHeight: "300px",
-        overflow: "hidden",
-      }}
-    >
-      {extendedList[id].el}
-    </Box>
+    <Layout key={extendedList[index].id} type={extendedList[index].type} />
   );
 });
 CarouselItem.displayName = "CarouselItem";

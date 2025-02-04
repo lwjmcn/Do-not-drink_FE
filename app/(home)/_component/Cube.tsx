@@ -5,7 +5,10 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-const Cube = () => {
+interface ICubeProps {
+  filename: string;
+}
+const Cube = (props: ICubeProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,7 +67,7 @@ const Cube = () => {
 
     // gltf object
     const loader = new GLTFLoader();
-    loader.load("/gltf/milkbox_origin.glb", (gltf) => {
+    loader.load(`/gltf/${props.filename}`, (gltf) => {
       const model = gltf.scene;
       model.scale.set(1.2, 1.2, 1.2);
       model.position.set(0, -0.1, 0);
