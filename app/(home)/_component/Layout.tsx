@@ -4,6 +4,7 @@ import Category from "./Category";
 import AddFriend from "./AddFriend";
 import Cube from "./Cube";
 import ReactionButton from "./ReactionButton";
+import { useRouter } from "next/navigation";
 
 interface ILayoutProps {
   type: "me" | "friend" | "add";
@@ -13,6 +14,8 @@ const Layout = (props: ILayoutProps) => {
   const name = "이예진";
   const likes = 100;
   const dislikes = 4;
+
+  const router = useRouter();
 
   const layoutConfig = {
     me: { title: money.toLocaleString(), showCube: true },
@@ -48,7 +51,7 @@ const Layout = (props: ILayoutProps) => {
 
               <Button
                 variant="contained"
-                onClick={() => alert("한 입 먹기")}
+                onClick={() => router.push("/input")}
                 sx={{
                   width: 80,
                   height: 80,

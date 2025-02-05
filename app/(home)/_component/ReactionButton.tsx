@@ -1,5 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { Stack, Typography } from "@mui/material";
 
 interface IReactionButtonProps {
   isLike: boolean;
@@ -7,8 +6,6 @@ interface IReactionButtonProps {
   enabled?: boolean;
 }
 const ReactionButton = (props: IReactionButtonProps) => {
-  const [open, setOpen] = useState(false);
-
   return (
     <Stack direction="row" alignItems={"center"}>
       <Typography
@@ -32,6 +29,7 @@ const ReactionButton = (props: IReactionButtonProps) => {
               : "down 0.5s forwards",
           },
           cursor: props.enabled ? "pointer" : "default",
+          userSelect: "none",
         }}
         onClick={() => {
           if (!props.enabled) return;
