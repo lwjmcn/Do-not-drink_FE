@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const WebCam = () => {
   const screenRef = useRef<HTMLVideoElement>(null);
@@ -11,7 +12,7 @@ const WebCam = () => {
   const loadDevices = async () => {
     // get all camera devices
     const mediaDevices = await navigator.mediaDevices.enumerateDevices();
-    let cameraDevices = [];
+    const cameraDevices = [];
     for (const device of mediaDevices) {
       if (device.kind === "videoinput") {
         cameraDevices.push(device);
@@ -20,15 +21,19 @@ const WebCam = () => {
     setDevices(cameraDevices);
   };
 
-  const startCamera = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        deviceId: devices[selectedDeviceIndex]?.deviceId || undefined,
-      },
-      audio: false,
-    });
-    setMediaStream(stream);
-  };
+  const startCamera = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          deviceId: devices[selectedDeviceIndex]?.deviceId || undefined,
+        },
+        audio: false,
+      });
+      setMediaStream(stream);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [devices, selectedDeviceIndex]);
 
   const stopCamera = () => {
     if (mediaStream) {
@@ -59,7 +64,7 @@ const WebCam = () => {
 
   useEffect(() => {
     startCamera();
-  }, []);
+  }, [startCamera]);
 
   useEffect(() => {
     if (screenRef.current && mediaStream)
@@ -81,9 +86,11 @@ const WebCam = () => {
       <button onClick={startCamera}>Start Camera</button>
       <button onClick={stopCamera}>Stop Camera</button>
       {imgData && (
-        <img
+        <Image
           src={imgData}
           alt="cam"
+          width={300}
+          height={300}
           onLoad={(e) =>
             document
               .createElement("canvas")

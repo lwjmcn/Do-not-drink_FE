@@ -32,7 +32,7 @@ const IconBox = (props: IIconBoxProps) => {
       }}
       onClick={() => props.href && router.push(props.href)}
     >
-      {cloneElement(props.icon as ReactElement<any>, {
+      {cloneElement(props.icon as ReactElement<{ sx?: object }>, {
         sx: {
           fontSize: "80px",
           color: "text.secondary",

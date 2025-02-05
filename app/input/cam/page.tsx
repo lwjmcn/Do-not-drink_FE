@@ -1,5 +1,3 @@
-import { createSocket } from "dgram";
-import { useEffect, useRef, useState } from "react";
 import WebCam from "./_component/WebCam";
 
 const Camera = () => {
