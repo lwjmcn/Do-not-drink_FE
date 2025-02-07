@@ -1,5 +1,6 @@
 import { Box, Button } from "@mui/material";
 import Carousel from "./_component/Carousel";
+import { signOut } from "auth";
 
 const Home = () => {
   return (
@@ -11,6 +12,10 @@ const Home = () => {
           textDecoration: "underline",
           textUnderlineOffset: 4,
           position: "absolute",
+        }}
+        onClick={async () => {
+          "use server";
+          await signOut({ redirectTo: "/" });
         }}
       >
         Logout
