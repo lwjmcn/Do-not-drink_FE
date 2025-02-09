@@ -66,15 +66,19 @@ const Cube = (props: ICubeProps) => {
     // cube.add(edges);
 
     // gltf object
-    const loader = new GLTFLoader();
-    loader.load(`/gltf/${props.filename}`, (gltf) => {
-      const model = gltf.scene;
-      model.scale.set(1.2, 1.2, 1.2);
-      model.position.set(0, -0.1, 0);
-      model.rotation.y = Math.PI / 6;
-      model.rotation.x = Math.PI / 10;
-      scene.add(model);
-    });
+    if (props.filename) {
+      const loader = new GLTFLoader();
+      console.log(`/gltf/${props.filename}`);
+      // 갑자기 302 Found 에러 뜸... 경로 문제 근데 auth 하기 전엔 멀쩡했음
+      loader.load(`/gltf/${props.filename}`, (gltf) => {
+        const model = gltf.scene;
+        model.scale.set(1.2, 1.2, 1.2);
+        model.position.set(0, -0.1, 0);
+        model.rotation.y = Math.PI / 6;
+        model.rotation.x = Math.PI / 10;
+        scene.add(model);
+      });
+    }
 
     // light
     const light = new THREE.DirectionalLight(0xffffff, 0.5);
