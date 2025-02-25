@@ -1,7 +1,7 @@
 import { Typography, Box, Button, Divider, Stack } from "@mui/material";
 import Link from "next/link";
 // import SignUpForm from "../_component/SignUpForm";
-import SignUpForm from "../_component/SignUpForm";
+import SignUpForm from "../_component/SignUpForm_hook";
 
 const SignUp = () => {
   return (
