@@ -1,0 +1,12 @@
+enum ResponseCode {
+  SUCCESS = "SUCCESS",
+  VALIDATION_FAIL = "VLF",
+  DUPLICATE_ID = "DI",
+  DUPLICATE_EMAIL = "DE",
+  SIGN_IN_FAIL = "SIF",
+  NO_EMAIL = "NE",
+  MAIL_SEND_FAIL = "MSF",
+  VERIFICATION_FAIL = "VRF",
+  DATABASE_ERROR = "DBE",
+}
+export default ResponseCode;
