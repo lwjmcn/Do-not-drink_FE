@@ -6,7 +6,7 @@ import Input from "@component/Input";
 import { useRouter } from "next/navigation";
 import { ISignUpForm } from "./SignUpFormProvider";
 import { accountIdCheckRequest } from "app/_api/auth/auth";
-import AccountIdCheckResponseDto from "app/api/response/auth/account-id-check.response.dto";
+import { AccountIdCheckResponseDto } from "app/_api/response/auth.response.dto";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useState } from "react";

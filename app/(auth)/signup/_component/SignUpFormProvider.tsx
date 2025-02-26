@@ -3,12 +3,11 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { tri } from "three/src/nodes/TSL.js";
 import { signUpRequest } from "app/_api/auth/auth";
 import { ResponseBody } from "app/_api/response/response_dto";
-import SignUpResponseDto from "app/api/response/auth/sign-up.response.dto";
 import ResponseCode from "public/type/response_code";
 import { useRouter } from "next/navigation";
+import { SignUpResponseDto } from "app/_api/response/auth.response.dto";
 
 const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
 const accountIdPattern = /^[a-zA-Z0-9]{4,20}$/;
@@ -73,7 +72,7 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
   const { handleSubmit } = form;
 
   const router = useRouter();
-  const signUpReponse = (
+  const signUpResponse = (
     responseBody: ResponseBody<SignUpResponseDto>
   ): void => {
     if (!responseBody) return;
@@ -88,13 +87,10 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
       message = "데이터베이스 오류입니다.";
     if (code == ResponseCode.SUCCESS) {
       message = "회원가입이 완료되었습니다.";
-      alert(message);
-      router.push("/home");
-      return;
     }
 
     alert(message);
-    router.push("/");
+    router.push("/signin");
   };
   const onSubmit = async (data: ISignUpForm) => {
     console.log(data);
@@ -102,7 +98,7 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
 
     // data omitting passwordCheck
     const { passwordCheck, ...dataWithoutPasswordCheck } = data;
-    await signUpRequest(dataWithoutPasswordCheck).then(signUpReponse);
+    await signUpRequest(dataWithoutPasswordCheck).then(signUpResponse);
   };
 
   return (
