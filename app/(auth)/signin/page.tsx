@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import GoogleIcon from "public/image/google.svg";
 import KakaoIcon from "public/image/kakao.svg";
-import SigninForm from "../_component/SignInForm";
+import SigninForm from "./_component/SignInForm";
 import Link from "next/link";
 import { signIn } from "auth";
 import { SocialLoginType } from "public/type/social_login";
@@ -15,7 +15,7 @@ const SignIn = () => {
   };
 
   return (
-    <>
+    <Stack direction={"column"} gap={2}>
       {/* <NotReadyAlert open={alertOpen} onClose={() => setAlertOpen(false)} /> */}
       <Typography variant="h2">Sign in</Typography>
       {/* SNS Sign in */}
@@ -55,13 +55,14 @@ const SignIn = () => {
           </Button>
         </form>
       </Box>
-      <Divider>
+      <Divider sx={{ marginY: 4 }}>
         <Typography color="textDisabled">or</Typography>
       </Divider>
+
       {/* Email Sign in */}
       <SigninForm />
-      {/* Sign up */}
 
+      {/* Sign up */}
       <Stack
         direction="row"
         alignItems="center"
@@ -76,7 +77,15 @@ const SignIn = () => {
           <Typography variant="body2">이메일로 회원가입</Typography>
         </Link>
       </Stack>
-    </>
+
+      {/* TODO: 비밀번호 찾기 */}
+      {/* <Link
+        href="/forgot-password"
+        style={{ alignSelf: "center", textDecorationLine: "underline" }}
+      >
+        <Typography>Forgot your password?</Typography>
+      </Link> */}
+    </Stack>
   );
 };
 export default SignIn;
