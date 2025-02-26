@@ -1,12 +1,4 @@
-import {
-  Button,
-  InputAdornment,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from "@mui/material";
-import { error } from "console";
-import { register } from "module";
+import { TextField, TextFieldProps } from "@mui/material";
 import {
   Control,
   FieldPath,
@@ -24,13 +16,13 @@ export type TControl<T extends FieldValues> = Omit<
     RegisterOptions<T>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
-  control: Control<T>;
+  control?: Control<T>;
 };
 
 const Input = <T extends FieldValues>(props: TControl<T>) => {
   const { name, rules, control } = props;
   const {
-    field: { value, onChange },
+    field: { value, onChange, onBlur },
     fieldState: { error },
   } = useController({ name, control, rules });
 
@@ -43,6 +35,7 @@ const Input = <T extends FieldValues>(props: TControl<T>) => {
       required={true}
       error={!!error}
       helperText={error?.message}
+      onBlur={onBlur}
       FormHelperTextProps={{
         sx: { marginLeft: 0 },
         ...props.FormHelperTextProps,
