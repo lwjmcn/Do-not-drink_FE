@@ -1,48 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
-import { useForm, useFormContext } from "react-hook-form";
-import Input from "../../_component/Input";
+import { useFormContext } from "react-hook-form";
+import Input from "@component/Input";
 import { useRouter } from "next/navigation";
 import { ISignUpForm } from "./SignUpFormProvider";
 
-const SignUpForm = () => {
+const EmailSignUpForm = () => {
   const router = useRouter();
-  const callbackUrl = "/home";
 
-  const { trigger, setError, setFocus } = useFormContext<ISignUpForm>();
+  const { trigger } = useFormContext<ISignUpForm>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
 
   const onClickNext = async () => {
-    // 이메일 중복 확인
-    // 패스워드 형식 확인
-    // 패스워드 일치 확인
+    // 이메일 중복 확인은 마지막에 백엔드에서 진행
     const isValid = await trigger(["email", "password", "passwordCheck"]);
-    if (!isValid) {
-      router.push("/auth/sign-up");
-    }
+    if (!isValid) return;
+
+    router.push("/signup/profile");
   };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        gap: 2,
-      }}
-    >
-      <Input
-        name="email"
-        label="이메일"
-        InputProps={{
-          endAdornment: <Chip label={"중복 확인"} variant="outlined" />,
-        }}
-      />
+    <Stack direction="column" spacing={2}>
+      <Input name="email" label="이메일" />
       <Input
         name="password"
         label="비밀번호"
@@ -87,11 +71,11 @@ const SignUpForm = () => {
           ),
         }}
       />
-      <Button type="submit" variant="contained">
-        <Typography>가입하기</Typography>
+      <Button type="button" variant="contained" onClick={onClickNext}>
+        <Typography>다음으로</Typography>
       </Button>
-    </Box>
+    </Stack>
   );
 };
 
-export default SignUpForm;
+export default EmailSignUpForm;

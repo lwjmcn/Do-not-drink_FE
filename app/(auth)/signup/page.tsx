@@ -1,16 +1,14 @@
 import { Typography, Box, Button, Divider, Stack } from "@mui/material";
 import Link from "next/link";
-// import SignUpForm from "../_component/SignUpForm";
-import SignUpForm from "../_component/SignUpForm_hook";
-import SignUpFormProvider from "../_component/SignUpFormProvider";
+import EmailSignUpForm from "./_component/EmailSignUpForm";
 
 const SignUp = () => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Stack direction={"column"} spacing={2}>
       <Typography variant="h2">Sign Up</Typography>
 
       {/* Email Sign Up */}
-      <SignUpForm />
+      <EmailSignUpForm />
 
       {/* Sign in */}
       <Stack
@@ -21,13 +19,13 @@ const SignUp = () => {
       >
         <Typography>계정이 이미 있으신가요?</Typography>
         <Link
-          href="/signup"
+          href="/signin"
           style={{ alignSelf: "center", textDecorationLine: "underline" }}
         >
           <Typography variant="body2">로그인</Typography>
         </Link>
       </Stack>
-    </Box>
+    </Stack>
   );
 };
 

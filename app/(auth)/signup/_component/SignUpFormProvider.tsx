@@ -3,6 +3,12 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { tri } from "three/src/nodes/TSL.js";
+import { signUpRequest } from "app/api/auth/auth";
+import { ResponseBody } from "app/api/response/response_dto";
+import SignUpResponseDto from "app/api/response/auth/sign-up.response.dto";
+import ResponseCode from "public/type/response_code";
+import { useRouter } from "next/navigation";
 
 const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
 const accountIdPattern = /^[a-zA-Z0-9]{4,20}$/;
@@ -40,6 +46,7 @@ const signUpFormSchema = z
       .regex(accountIdPattern, {
         message: "영문 또는 숫자만 입력할 수 있습니다.",
       }),
+    themeId: z.number().int().positive(),
   })
   .refine((data) => data.password === data.passwordCheck, {
     path: ["passwordCheck"],
@@ -54,6 +61,7 @@ const defaultValues: ISignUpForm = {
   passwordCheck: "",
   nickname: "",
   accountId: "",
+  themeId: 1,
 };
 
 const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
@@ -62,17 +70,49 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
     defaultValues,
     resolver: zodResolver(signUpFormSchema),
   });
-
   const { handleSubmit } = form;
 
+  const router = useRouter();
+  const signUpReponse = (
+    responseBody: ResponseBody<SignUpResponseDto>
+  ): void => {
+    if (!responseBody) return;
+    const { code } = responseBody;
+
+    let message = "";
+    if (code == ResponseCode.DUPLICATE_ID)
+      message = "이미 존재하는 아이디입니다.";
+    if (code == ResponseCode.DUPLICATE_EMAIL)
+      message = "이미 회원으로 가입된 이메일입니다.";
+    if (code == ResponseCode.DATABASE_ERROR)
+      message = "데이터베이스 오류입니다.";
+    if (code == ResponseCode.SUCCESS) {
+      message = "회원가입이 완료되었습니다.";
+      alert(message);
+      router.push("/home");
+      return;
+    }
+
+    alert(message);
+    router.push("/");
+  };
   const onSubmit = async (data: ISignUpForm) => {
     console.log(data);
     alert(JSON.stringify(data));
+
+    // data omitting passwordCheck
+    const { passwordCheck, ...dataWithoutPasswordCheck } = data;
+    await signUpRequest(dataWithoutPasswordCheck).then(signUpReponse);
   };
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ flex: 1, display: "flex", flexDirection: "column" }}
+      >
+        {children}
+      </form>
     </FormProvider>
   );
 };

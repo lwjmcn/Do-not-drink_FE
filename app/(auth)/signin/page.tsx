@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import GoogleIcon from "public/image/google.svg";
 import KakaoIcon from "public/image/kakao.svg";
 import SigninForm from "../_component/SignInForm";
@@ -61,12 +61,21 @@ const SignIn = () => {
       {/* Email Sign in */}
       <SigninForm />
       {/* Sign up */}
-      <Typography sx={{ textAlign: "center" }}>
-        Don&apos;t have an account?{" "}
-        <Link href="/signup" style={{ alignSelf: "center" }}>
-          <Typography variant="body2">Sign up</Typography>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        gap={"4px"}
+      >
+        <Typography>계정이 없으신가요?</Typography>
+        <Link
+          href="/signup"
+          style={{ alignSelf: "center", textDecorationLine: "underline" }}
+        >
+          <Typography variant="body2">이메일로 회원가입</Typography>
         </Link>
-      </Typography>
+      </Stack>
     </>
   );
 };

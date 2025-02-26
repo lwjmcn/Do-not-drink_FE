@@ -3,6 +3,7 @@ import AccountIdCheckResponseDto from "../response/auth/account-id-check.respons
 import axios, { AxiosError, AxiosResponse } from "axios";
 import ResponseDto from "../response/response_dto";
 import { SocialLoginType } from "public/type/social_login";
+import SignUpRequestDto from "../request/auth/sign-up.request.dto";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth`;
 
@@ -15,6 +16,9 @@ const errorHandler = (error: AxiosError) => {
   return error.response.data as ResponseDto;
 };
 
+export const SnsSignInURL = (type: SocialLoginType) =>
+  `${API_URL}/oauth2/${type}`;
+
 export const accountIdCheckRequest = async (
   requestBody: AccountIdCheckRequestDto
 ) => {
@@ -25,5 +29,10 @@ export const accountIdCheckRequest = async (
   return result;
 };
 
-export const SnsSignInURL = (type: SocialLoginType) =>
-  `${API_URL}/oauth2/${type}`;
+export const signUpRequest = async (requestBody: SignUpRequestDto) => {
+  const result = await axios
+    .post(`${API_URL}/sign-up`, requestBody)
+    .then(responseHandler<ResponseDto>)
+    .catch(errorHandler);
+  return result;
+};
