@@ -1,10 +1,22 @@
-import AccountIdCheckRequestDto from "../request/auth/account-id-check.request.dto";
-import AccountIdCheckResponseDto from "../response/auth/account-id-check.response.dto";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import ResponseDto from "../response/response_dto";
 import { SocialLoginType } from "public/type/social_login";
-import SignUpRequestDto from "../request/auth/sign-up.request.dto";
-
+import {
+  AccountIdCheckRequestDto,
+  EmailVerificationRequestDto,
+  CheckVerificationRequestDto,
+  SignUpRequestDto,
+  SignInRequestDto,
+  OAuthSignUpRequestDto,
+} from "../request/auth.request.dto";
+import {
+  AccountIdCheckResponseDto,
+  CheckVerificationResponseDto,
+  EmailVerificationResponseDto,
+  SignUpResponseDto,
+  SignInResponseDto,
+  OAuthSignUpResponseDto,
+} from "../response/auth.response.dto";
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth`;
 
 const responseHandler = <T>(response: AxiosResponse) => {
@@ -29,10 +41,48 @@ export const accountIdCheckRequest = async (
   return result;
 };
 
+export const emailVerificationRequest = async (
+  requestBody: EmailVerificationRequestDto
+) => {
+  const result = await axios
+    .post(`${API_URL}/email-verification`, requestBody)
+    .then(responseHandler<EmailVerificationResponseDto>) // NO_EMAIL or MAIN_SEND_FAIL
+    .catch(errorHandler);
+  return result;
+};
+
+export const checkVerificationRequest = async (
+  requestBody: CheckVerificationRequestDto
+) => {
+  const result = await axios
+    .post(`${API_URL}/check-verification`, requestBody)
+    .then(responseHandler<CheckVerificationResponseDto>) // NO_EMAIL or VERIFICATION_FAIL
+    .catch(errorHandler);
+  return result;
+};
+
 export const signUpRequest = async (requestBody: SignUpRequestDto) => {
   const result = await axios
     .post(`${API_URL}/sign-up`, requestBody)
-    .then(responseHandler<ResponseDto>)
+    .then(responseHandler<SignUpResponseDto>)
+    .catch(errorHandler);
+  return result;
+};
+
+export const signInRequest = async (requestBody: SignInRequestDto) => {
+  const result = await axios
+    .post(`${API_URL}/sign-in`, requestBody)
+    .then(responseHandler<SignInResponseDto>)
+    .catch(errorHandler);
+  return result;
+};
+
+export const oauth2SignUpRequest = async (
+  requestBody: OAuthSignUpRequestDto
+) => {
+  const result = await axios
+    .post(`${API_URL}/oauth-sign-up`, requestBody)
+    .then(responseHandler<OAuthSignUpResponseDto>)
     .catch(errorHandler);
   return result;
 };
