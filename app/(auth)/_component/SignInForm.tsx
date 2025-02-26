@@ -14,7 +14,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import ExclamationCircleIcon from "@mui/icons-material/InfoRounded";
 import { useSearchParams } from "next/navigation";
-import { authenticate } from "app/api/auth/signin";
+import { authenticate } from "app/_api/auth/signin";
 
 const SigninForm = () => {
   const searchParams = useSearchParams();

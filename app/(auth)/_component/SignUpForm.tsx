@@ -6,10 +6,10 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import ExclamationCircleIcon from "@mui/icons-material/InfoRounded";
 import { useSearchParams } from "next/navigation";
-import { authenticate } from "app/api/auth/signin";
-import { accountIdCheckRequest } from "app/api/auth/auth";
+import { authenticate } from "app/_api/auth/signin";
+import { accountIdCheckRequest } from "app/_api/auth/auth";
 import AccountIdCheckResponseDto from "app/api/response/auth/account-id-check.response.dto";
-import ResponseDto, { ResponseBody } from "app/api/response/response_dto";
+import ResponseDto, { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 
 const SignUpForm = () => {
