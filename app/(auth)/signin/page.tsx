@@ -5,7 +5,7 @@ import SigninForm from "./_component/SignInForm";
 import Link from "next/link";
 import { signIn } from "auth";
 import { SocialLoginType } from "public/type/social_login";
-import { SnsSignInURL } from "app/_api/auth/auth";
+import { SnsSignInURL } from "app/_api/auth";
 
 const SignIn = () => {
   // const [alertOpen, setAlertOpen] = useState(false);

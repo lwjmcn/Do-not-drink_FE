@@ -12,7 +12,7 @@ import { SignInResponseDto } from "app/_api/response/auth.response.dto";
 import { signInRequest } from "app/_api/auth";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
-import { setCookie } from "cookies-next";
+import { saveToken } from "public/util/cookies";
 
 interface ISignInForm extends SignInRequestDto {}
 const SignInForm = () => {
@@ -43,17 +43,15 @@ const SignInForm = () => {
       message = "로그인이 완료되었습니다.";
       alert(message);
 
-      const now = new Date().getTime() * 1000;
-      const expires = new Date(now + expirationTime);
-      setCookie("accessToken", token, { expires, path: "/" });
+      saveToken(token, expirationTime);
 
       router.push(callbackUrl);
-      alert("홈?");
       return;
     }
 
     alert(message);
   };
+
   const onSubmit = async (data: ISignInForm) => {
     console.log(data);
     alert(JSON.stringify(data));
