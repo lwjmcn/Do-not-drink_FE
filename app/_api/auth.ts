@@ -90,7 +90,9 @@ export const oauth2SignUpRequest = async (
   requestBody: OAuthSignUpRequestDto
 ) => {
   const result = await axios
-    .post(`${AUTH_API_URL}/oauth-sign-up`, requestBody)
+    .post(`${AUTH_API_URL}/oauth-sign-up`, requestBody, {
+      withCredentials: true, // HttpSession 전달
+    })
     .then(responseHandler<OAuthSignUpResponseDto>)
     .catch(errorHandler);
   return result;
