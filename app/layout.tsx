@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import MainLayout from "@component/MainLayout";
-import AuthSession from "./auth/_component/AuthSession";
 
 export const metadata: Metadata = {
   title: "Budge",
@@ -18,9 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <AuthSession>
-            <MainLayout>{children}</MainLayout>
-          </AuthSession>
+          <MainLayout>{children}</MainLayout>
         </AppRouterCacheProvider>
       </body>
     </html>

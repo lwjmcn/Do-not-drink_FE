@@ -3,7 +3,6 @@ import GoogleIcon from "public/image/google.svg";
 import KakaoIcon from "public/image/kakao.svg";
 import SigninForm from "./_component/SignInForm";
 import Link from "next/link";
-import { signIn } from "auth";
 import { SocialLoginType } from "public/type/social_login";
 import { SnsSignInURL } from "app/_api/auth";
 
@@ -20,7 +19,7 @@ const SignIn = () => {
       <Typography variant="h2">Sign in</Typography>
       {/* SNS Sign in */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <form
+        {/* <form
           action={async () => {
             "use server";
             await signIn("google");
