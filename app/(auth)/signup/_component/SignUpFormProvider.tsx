@@ -3,7 +3,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpRequest } from "app/_api/auth/auth";
+import { signUpRequest } from "app/_api/auth";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useRouter } from "next/navigation";

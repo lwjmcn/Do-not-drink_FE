@@ -9,7 +9,7 @@ import Input from "@component/Input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SignInRequestDto } from "app/_api/request/auth.request.dto";
 import { SignInResponseDto } from "app/_api/response/auth.response.dto";
-import { signInRequest } from "app/_api/auth/auth";
+import { signInRequest } from "app/_api/auth";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { setCookie } from "cookies-next";

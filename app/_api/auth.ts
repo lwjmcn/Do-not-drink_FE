@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import ResponseDto from "../response/response_dto";
+import ResponseDto from "./response/response_dto";
 import { SocialLoginType } from "public/type/social_login";
 import {
   AccountIdCheckRequestDto,
@@ -8,7 +8,7 @@ import {
   SignUpRequestDto,
   SignInRequestDto,
   OAuthSignUpRequestDto,
-} from "../request/auth.request.dto";
+} from "./request/auth.request.dto";
 import {
   AccountIdCheckResponseDto,
   CheckVerificationResponseDto,
@@ -16,11 +16,20 @@ import {
   SignUpResponseDto,
   SignInResponseDto,
   OAuthSignUpResponseDto,
-} from "../response/auth.response.dto";
-const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth`;
+} from "./response/auth.response.dto";
+import ResponseCode from "public/type/response_code";
+import { NextResponse } from "next/server";
+
+const AUTH_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth`;
 
 const responseHandler = <T>(response: AxiosResponse) => {
   const responseBody: T = response.data;
+
+  const { code } = responseBody as ResponseDto;
+  if (code == ResponseCode.NO_PERMISSION) {
+    NextResponse.redirect("/signin", 401);
+  }
+
   return responseBody;
 };
 const errorHandler = (error: AxiosError) => {
@@ -29,13 +38,13 @@ const errorHandler = (error: AxiosError) => {
 };
 
 export const SnsSignInURL = (type: SocialLoginType) =>
-  `${API_URL}/oauth2/${type}`;
+  `${AUTH_API_URL}/oauth2/${type}`;
 
 export const accountIdCheckRequest = async (
   requestBody: AccountIdCheckRequestDto
 ) => {
   const result = await axios
-    .post(`${API_URL}/account-id-check`, requestBody)
+    .post(`${AUTH_API_URL}/account-id-check`, requestBody)
     .then(responseHandler<AccountIdCheckResponseDto>)
     .catch(errorHandler);
   return result;
@@ -45,7 +54,7 @@ export const emailVerificationRequest = async (
   requestBody: EmailVerificationRequestDto
 ) => {
   const result = await axios
-    .post(`${API_URL}/email-verification`, requestBody)
+    .post(`${AUTH_API_URL}/email-verification`, requestBody)
     .then(responseHandler<EmailVerificationResponseDto>) // NO_EMAIL or MAIN_SEND_FAIL
     .catch(errorHandler);
   return result;
@@ -55,7 +64,7 @@ export const checkVerificationRequest = async (
   requestBody: CheckVerificationRequestDto
 ) => {
   const result = await axios
-    .post(`${API_URL}/check-verification`, requestBody)
+    .post(`${AUTH_API_URL}/check-verification`, requestBody)
     .then(responseHandler<CheckVerificationResponseDto>) // NO_EMAIL or VERIFICATION_FAIL
     .catch(errorHandler);
   return result;
@@ -63,7 +72,7 @@ export const checkVerificationRequest = async (
 
 export const signUpRequest = async (requestBody: SignUpRequestDto) => {
   const result = await axios
-    .post(`${API_URL}/sign-up`, requestBody)
+    .post(`${AUTH_API_URL}/sign-up`, requestBody)
     .then(responseHandler<SignUpResponseDto>)
     .catch(errorHandler);
   return result;
@@ -71,7 +80,7 @@ export const signUpRequest = async (requestBody: SignUpRequestDto) => {
 
 export const signInRequest = async (requestBody: SignInRequestDto) => {
   const result = await axios
-    .post(`${API_URL}/sign-in`, requestBody)
+    .post(`${AUTH_API_URL}/sign-in`, requestBody)
     .then(responseHandler<SignInResponseDto>)
     .catch(errorHandler);
   return result;
@@ -81,7 +90,7 @@ export const oauth2SignUpRequest = async (
   requestBody: OAuthSignUpRequestDto
 ) => {
   const result = await axios
-    .post(`${API_URL}/oauth-sign-up`, requestBody)
+    .post(`${AUTH_API_URL}/oauth-sign-up`, requestBody)
     .then(responseHandler<OAuthSignUpResponseDto>)
     .catch(errorHandler);
   return result;
