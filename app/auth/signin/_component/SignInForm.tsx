@@ -6,7 +6,7 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import { useForm } from "react-hook-form";
 import Input from "@component/Input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { SignInRequestDto } from "app/_api/request/auth.request.dto";
 import { SignInResponseDto } from "app/_api/response/auth.response.dto";
 import { signInRequest } from "app/_api/auth";
@@ -14,12 +14,9 @@ import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { saveToken } from "public/util/cookies";
 
-interface ISignInForm extends SignInRequestDto {}
+// interface ISignInForm extends SignInRequestDto {}
 const SignInForm = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/home";
-
-  const { handleSubmit, control } = useForm<ISignInForm>({
+  const { handleSubmit, control } = useForm<SignInRequestDto>({
     mode: "onBlur",
     defaultValues: {
       email: "",
@@ -45,14 +42,14 @@ const SignInForm = () => {
 
       saveToken(token, expirationTime);
 
-      router.push(callbackUrl);
+      router.push("/home");
       return;
     }
 
     alert(message);
   };
 
-  const onSubmit = async (data: ISignInForm) => {
+  const onSubmit = async (data: SignInRequestDto) => {
     console.log(data);
     alert(JSON.stringify(data));
 
@@ -63,7 +60,7 @@ const SignInForm = () => {
     if (email === "admin" && password === "jorupmotte2002") {
       alert("관리자로 로그인 합니다.");
       saveToken("admin", 3600);
-      router.push(callbackUrl);
+      router.push("/home");
       return;
     }
 

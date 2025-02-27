@@ -8,6 +8,7 @@ import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useRouter } from "next/navigation";
 import { SignUpResponseDto } from "app/_api/response/auth.response.dto";
+import { SignUpRequestDto } from "app/_api/request/auth.request.dto";
 
 const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}$/;
 const accountIdPattern = /^[a-zA-Z0-9]{4,20}$/;
@@ -97,7 +98,13 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
     alert(JSON.stringify(data));
 
     // data omitting passwordCheck
-    const { passwordCheck, ...dataWithoutPasswordCheck } = data;
+    const dataWithoutPasswordCheck: SignUpRequestDto = {
+      email: data.email,
+      password: data.password,
+      nickname: data.nickname,
+      accountId: data.accountId,
+      themeId: data.themeId,
+    };
     await signUpRequest(dataWithoutPasswordCheck).then(signUpResponse);
   };
 

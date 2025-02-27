@@ -1,15 +1,9 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import SigninForm from "./_component/SignInForm";
 import Link from "next/link";
-import { SocialLoginType } from "public/type/social_login";
-import { SnsSignInURL } from "app/_api/auth";
 import KakaoSignin from "./_component/KakaoSignin";
 
 const SignIn = () => {
-  const onSnsSignIn = (type: SocialLoginType) => {
-    window.location.href = SnsSignInURL(type);
-  };
-
   return (
     <Stack direction={"column"} gap={2}>
       <Typography variant="h2">Sign in</Typography>

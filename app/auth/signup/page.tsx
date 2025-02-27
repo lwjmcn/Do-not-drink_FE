@@ -1,4 +1,4 @@
-import { Typography, Box, Button, Divider, Stack } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 import Link from "next/link";
 import EmailSignUpForm from "./_component/EmailSignUpForm";
 

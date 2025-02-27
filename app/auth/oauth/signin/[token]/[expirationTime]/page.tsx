@@ -12,7 +12,7 @@ const OAuthSignIn = () => {
     if (!token || !expirationTime) return;
     saveToken(token as string, Number(expirationTime));
     router.push("/home");
-  }, [token]);
+  }, [token, expirationTime, router]);
 };
 
 export default OAuthSignIn;

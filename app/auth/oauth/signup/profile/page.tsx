@@ -14,7 +14,7 @@ const OAuthSignUp = () => {
   useEffect(() => {
     setValue("nickname", params.get("nickname") ?? "");
     setValue("accountId", params.get("accountId") ?? "");
-  }, []);
+  }, [params, setValue]);
 
   return (
     <Stack direction={"column"} spacing={2}>
