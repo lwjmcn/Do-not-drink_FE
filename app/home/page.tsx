@@ -5,13 +5,21 @@ import Carousel from "./_component/Carousel";
 import { signOutRequest } from "app/_api/user";
 import ResponseDto, { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
-import { deleteToken } from "public/util/cookies";
+import { deleteToken, getCookie } from "public/util/cookies";
 import { useRouter } from "next/navigation";
 
 const Home = () => {
   const router = useRouter();
 
   const onClickLogout = async () => {
+    // 프론트 테스트용 관리자 계정
+    if ((await getCookie("accessToken")) == "admin") {
+      alert("관리자 로그아웃 되었습니다.");
+      deleteToken();
+      router.push("/auth/signin");
+      return;
+    }
+
     await signOutRequest().then((responseBody: ResponseBody<ResponseDto>) => {
       if (responseBody) {
         const { code } = responseBody;

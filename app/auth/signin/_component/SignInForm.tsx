@@ -56,6 +56,17 @@ const SignInForm = () => {
     console.log(data);
     alert(JSON.stringify(data));
 
+    const { email, password } = data;
+
+    // 프론트 테스트용 관리자 계정
+    // email "admin", password "jorupmotte2002"
+    if (email === "admin" && password === "jorupmotte2002") {
+      alert("관리자로 로그인 합니다.");
+      saveToken("admin", 3600);
+      router.push(callbackUrl);
+      return;
+    }
+
     await signInRequest(data).then(signInResponse);
   };
 
