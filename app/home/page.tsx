@@ -18,7 +18,7 @@ const Home = () => {
         if (code == ResponseCode.SUCCESS) {
           alert("로그아웃 되었습니다.");
           deleteToken();
-          router.push("/");
+          router.push("/auth/signin");
           return;
         }
       }

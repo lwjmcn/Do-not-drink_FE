@@ -7,9 +7,7 @@ import { SocialLoginType } from "public/type/social_login";
 import { SnsSignInURL } from "app/_api/auth";
 
 const SignIn = () => {
-  // const [alertOpen, setAlertOpen] = useState(false);
-
-  const snsSignIn = async (type: SocialLoginType) => {
+  const onSnsSignIn = (type: SocialLoginType) => {
     window.location.href = SnsSignInURL(type);
   };
 
@@ -33,21 +31,14 @@ const SignIn = () => {
           >
             Sign in with Google
           </Button>
-        </form>
-        <form
-          action={async () => {
-            "use server";
-            await signIn("kakao", {
-              // redirect: tr
-            });
-          }}
-        >
+        </form> */}
+        <form action={SnsSignInURL(SocialLoginType.KAKAO)}>
           <Button
             type="submit"
             fullWidth
             variant="outlined"
             sx={{ bgcolor: "#FEE500", color: "rgba(0,0,0,0.85)" }}
-            // onClick={() => setAlertOpen(true)}
+            // onClick={() => onSnsSignIn(SocialLoginType.KAKAO)}
             startIcon={<KakaoIcon />}
           >
             Sign in with Kakao

@@ -1,4 +1,7 @@
+"use client";
+
 import { useParams, useRouter } from "next/navigation";
+import { saveToken } from "public/util/cookies";
 import { useEffect } from "react";
 
 const OAuthSignIn = () => {
@@ -7,8 +10,8 @@ const OAuthSignIn = () => {
 
   useEffect(() => {
     if (!token || !expirationTime) return;
-
-    router.replace("/home");
+    saveToken(token as string, Number(expirationTime));
+    router.push("/home");
   }, [token]);
 };
 
