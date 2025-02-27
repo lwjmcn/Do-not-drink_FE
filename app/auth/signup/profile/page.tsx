@@ -1,4 +1,4 @@
-import ProfileForm from "../_component/ProfileForm";
+import ProfileForm from "../../_component/ProfileForm";
 import { Stack, Typography } from "@mui/material";
 
 const AddProfile = () => {

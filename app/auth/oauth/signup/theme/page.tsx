@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import ThemeSelect from "../../_component/ThemeSelect";
+import ThemeSelect from "../../../_component/ThemeSelect";
 
 const ChooseTheme = () => {
   return (
