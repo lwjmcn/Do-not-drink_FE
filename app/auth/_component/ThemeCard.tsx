@@ -1,11 +1,10 @@
 import { Card, CardContent } from "@mui/material";
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
-import { ISignUpForm } from "./SignUpFormProvider";
 import { ITheme } from "./ThemeSelect";
 
 const ThemeCard = (props: ITheme) => {
-  const { setValue, watch } = useFormContext<ISignUpForm>();
+  const { setValue, watch } = useFormContext();
 
   return (
     <Card

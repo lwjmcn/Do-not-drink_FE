@@ -4,17 +4,18 @@ import { Button, Chip, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import Input from "@component/Input";
 import { useRouter } from "next/navigation";
-import { ISignUpForm } from "./SignUpFormProvider";
 import { accountIdCheckRequest } from "app/_api/auth";
 import { AccountIdCheckResponseDto } from "app/_api/response/auth.response.dto";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useState } from "react";
 
-const ProfileForm = () => {
+interface ProfileFormProps {
+  isSocial?: boolean;
+}
+const ProfileForm = (props: ProfileFormProps) => {
   const router = useRouter();
-  const { trigger, getValues, setError, setFocus } =
-    useFormContext<ISignUpForm>();
+  const { trigger, getValues, setError, setFocus } = useFormContext();
 
   const [accountIdCheck, setAccountIdCheck] = useState(false);
   const onClickAccountIdCheck = async () => {
@@ -57,7 +58,7 @@ const ProfileForm = () => {
     const isValid = await trigger(["nickname", "accountId"]);
     if (!isValid) return;
 
-    router.push("/auth/signup/theme");
+    router.push("/auth" + (props.isSocial ? "/oauth" : "") + "/signup/theme");
   };
 
   return (

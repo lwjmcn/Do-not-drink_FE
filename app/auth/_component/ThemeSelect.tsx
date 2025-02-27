@@ -3,7 +3,6 @@
 import { Button, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { ISignUpForm } from "./SignUpFormProvider";
 import ThemeCard from "./ThemeCard";
 
 export interface ITheme {
@@ -43,7 +42,7 @@ const data: ITheme[] = [
 
 const ThemeSelect = () => {
   const router = useRouter();
-  const { trigger } = useFormContext<ISignUpForm>();
+  const { trigger, getValues } = useFormContext();
 
   return (
     <Stack direction="column" spacing={2} flex={1}>
