@@ -1,10 +1,9 @@
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import GoogleIcon from "public/image/google.svg";
-import KakaoIcon from "public/image/kakao.svg";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import SigninForm from "./_component/SignInForm";
 import Link from "next/link";
 import { SocialLoginType } from "public/type/social_login";
 import { SnsSignInURL } from "app/_api/auth";
+import KakaoSignin from "./_component/KakaoSignin";
 
 const SignIn = () => {
   const onSnsSignIn = (type: SocialLoginType) => {
@@ -13,38 +12,11 @@ const SignIn = () => {
 
   return (
     <Stack direction={"column"} gap={2}>
-      {/* <NotReadyAlert open={alertOpen} onClose={() => setAlertOpen(false)} /> */}
       <Typography variant="h2">Sign in</Typography>
+
       {/* SNS Sign in */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {/* <form
-          action={async () => {
-            "use server";
-            await signIn("google");
-          }}
-        >
-          <Button
-            type="submit"
-            fullWidth
-            variant="outlined"
-            startIcon={<GoogleIcon />}
-          >
-            Sign in with Google
-          </Button>
-        </form> */}
-        <form action={SnsSignInURL(SocialLoginType.KAKAO)}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="outlined"
-            sx={{ bgcolor: "#FEE500", color: "rgba(0,0,0,0.85)" }}
-            // onClick={() => onSnsSignIn(SocialLoginType.KAKAO)}
-            startIcon={<KakaoIcon />}
-          >
-            Sign in with Kakao
-          </Button>
-        </form>
-      </Box>
+      <KakaoSignin />
+
       <Divider sx={{ marginY: 4 }}>
         <Typography color="textDisabled">or</Typography>
       </Divider>

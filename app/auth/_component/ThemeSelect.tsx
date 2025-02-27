@@ -1,8 +1,6 @@
 "use client";
 
 import { Button, Grid2 as Grid, Stack, Typography } from "@mui/material";
-import { useFormContext } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import ThemeCard from "./ThemeCard";
 
 export interface ITheme {
@@ -38,12 +36,9 @@ const data: ITheme[] = [
     fileUrl:
       "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
-];
+]; // TODO: 서버에서 받아오기
 
 const ThemeSelect = () => {
-  const router = useRouter();
-  const { trigger, getValues } = useFormContext();
-
   return (
     <Stack direction="column" spacing={2} flex={1}>
       {/* <Input name="themeId" label="테마" /> */}
