@@ -19,7 +19,7 @@ const SignUp = () => {
       >
         <Typography>계정이 이미 있으신가요?</Typography>
         <Link
-          href="/signin"
+          href="/auth/signin"
           style={{ alignSelf: "center", textDecorationLine: "underline" }}
         >
           <Typography variant="body2">로그인</Typography>

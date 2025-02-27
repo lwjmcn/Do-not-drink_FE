@@ -90,7 +90,7 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     alert(message);
-    router.push("/signin");
+    router.push("/auth/signin");
   };
   const onSubmit = async (data: ISignUpForm) => {
     console.log(data);

@@ -22,7 +22,7 @@ const EmailSignUpForm = () => {
     const isValid = await trigger(["email", "password", "passwordCheck"]);
     if (!isValid) return;
 
-    router.push("/signup/profile");
+    router.push("/auth/signup/profile");
   };
   return (
     <Stack direction="column" spacing={2}>

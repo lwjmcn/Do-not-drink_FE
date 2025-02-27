@@ -71,7 +71,7 @@ const SignIn = () => {
       >
         <Typography>계정이 없으신가요?</Typography>
         <Link
-          href="/signup"
+          href="/auth/signup"
           style={{ alignSelf: "center", textDecorationLine: "underline" }}
         >
           <Typography variant="body2">이메일로 회원가입</Typography>

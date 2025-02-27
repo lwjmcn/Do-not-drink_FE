@@ -57,7 +57,7 @@ const ProfileForm = () => {
     const isValid = await trigger(["nickname", "accountId"]);
     if (!isValid) return;
 
-    router.push("/signup/theme");
+    router.push("/auth/signup/theme");
   };
 
   return (

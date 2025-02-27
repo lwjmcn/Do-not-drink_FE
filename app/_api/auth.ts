@@ -27,7 +27,7 @@ const responseHandler = <T>(response: AxiosResponse) => {
 
   const { code } = responseBody as ResponseDto;
   if (code == ResponseCode.NO_PERMISSION) {
-    NextResponse.redirect("/signin", 401);
+    NextResponse.redirect("/auth/signin", 401);
   }
 
   return responseBody;
