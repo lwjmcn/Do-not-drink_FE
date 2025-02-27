@@ -8,5 +8,6 @@ enum ResponseCode {
   MAIL_SEND_FAIL = "MSF",
   VERIFICATION_FAIL = "VRF",
   DATABASE_ERROR = "DBE",
+  NO_PERMISSION = "NP",
 }
 export default ResponseCode;

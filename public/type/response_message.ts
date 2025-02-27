@@ -8,6 +8,7 @@ enum ResponseMessage {
   MAIL_SEND_FAIL = "Failed to send an email",
   VERIFICATION_FAIL = "Verification failed",
   DATABASE_ERROR = "Database error",
+  NO_PERMISSION = "No permission",
 }
 
 export default ResponseMessage;
