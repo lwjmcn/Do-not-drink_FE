@@ -2,7 +2,7 @@ import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "public/util/axios";
 import ResponseDto from "./response/response_dto";
 
-const USER_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/user`;
+const USER_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`;
 
 const responseHandler = <T>(response: AxiosResponse) => {
   const responseBody: T = response.data;

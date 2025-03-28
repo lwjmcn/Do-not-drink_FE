@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 
-const protectedRoutes = ["/home", "/input", "/history"];
+const protectedRoutes = ["/home", "/input", "/category"];
 const publicRoutes = ["/auth"]; // "/"
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
@@ -12,27 +12,27 @@ const middleware = async (request: NextRequest) => {
   } else {
     const tokenExp = jwtDecode<{ exp?: number }>(accessToken).exp ?? 0;
     isAuth = tokenExp > Date.now() / 1000;
-
-    console.log(
-      "Token Expiration:",
-      tokenExp,
-      "Current Time:",
-      Date.now() / 1000
-    );
   }
   console.log("isAuth", isAuth);
 
   // no login: protected -> public
-  if (!isAuth && protectedRoutes.includes(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/", request.nextUrl.origin));
+  if (!isAuth) {
+    for (const route of protectedRoutes) {
+      if (request.nextUrl.pathname.startsWith(route)) {
+        return NextResponse.redirect(new URL("/", request.nextUrl.origin));
+      }
+    }
   }
+
   // login: public -> protected
-  if (
-    isAuth &&
-    (publicRoutes.includes(request.nextUrl.pathname) ||
-      request.nextUrl.pathname === "/")
-  ) {
-    return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
+  if (isAuth) {
+    if (request.nextUrl.pathname === "/")
+      return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
+    for (const route of publicRoutes) {
+      if (request.nextUrl.pathname.startsWith(route)) {
+        return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
+      }
+    }
   }
 
   return NextResponse.next();
