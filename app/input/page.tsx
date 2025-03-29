@@ -5,7 +5,7 @@ import IconBox from "./_component/IconBox";
 
 const Input = () => {
   return (
-    <Stack direction={"column"} paddingX={4} paddingY={8} spacing={2}>
+    <Stack direction="column" spacing={6} marginY={"auto"} marginX={2}>
       <IconBox
         icon={<Camera />}
         text={"사진으로 입력하기"}

@@ -1,49 +1,47 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { cloneElement, ReactElement } from "react";
 
-interface IIconBoxProps {
+interface IconBoxProps {
   icon: React.ReactNode;
   text: string;
-  href?: string;
+  href: string;
 }
-const IconBox = (props: IIconBoxProps) => {
+const IconBox = ({ icon, text, href }: IconBoxProps) => {
   const router = useRouter();
 
   return (
-    <Box
+    <Stack
+      direction={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      width={"100%"}
+      height={200}
       sx={{
-        width: "100%",
-        height: "calc(50vh - 100px)",
-        bgcolor: "info.contrastText",
-        padding: 2,
+        bgcolor: "#fff",
         borderRadius: 2,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         ":hover:active": {
           backgroundColor: "info.light",
           transition: "background-color 0.3s ease",
         },
         cursor: "pointer",
       }}
-      onClick={() => props.href && router.push(props.href)}
+      onClick={() => router.push(href)}
     >
-      {cloneElement(props.icon as ReactElement<{ sx?: object }>, {
+      {cloneElement(icon as ReactElement<{ sx?: object }>, {
         sx: {
           fontSize: "80px",
-          color: "text.secondary",
+          color: "#000",
           opacity: 0.7,
         },
       })}
 
-      <Typography variant="h6" sx={{ opacity: 0.5, fontWeight: 600 }}>
-        {props.text}
+      <Typography variant="h6" color="#000">
+        {text}
       </Typography>
-    </Box>
+    </Stack>
   );
 };
 

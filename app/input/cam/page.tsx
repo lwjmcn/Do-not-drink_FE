@@ -1,6 +1,6 @@
 import WebCam from "./_component/WebCam";
 
-const Camera = () => {
+const CameraPage = () => {
   return <WebCam />;
 };
-export default Camera;
+export default CameraPage;
