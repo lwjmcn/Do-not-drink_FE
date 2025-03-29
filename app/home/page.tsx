@@ -1,55 +1,23 @@
 "use client";
 
-import { Box, Button } from "@mui/material";
-import Carousel from "./_component/Carousel";
-import { signOutRequest } from "app/_api/user";
-import ResponseDto, { ResponseBody } from "app/_api/response/response_dto";
-import ResponseCode from "public/type/response_code";
-import { deleteToken, getCookie } from "public/util/cookies";
-import { useRouter } from "next/navigation";
+import { Stack } from "@mui/material";
+import Layout from "./_component/Layout";
+import { useEffect } from "react";
+import { useRouterWrapper } from "./_component/page_transition/RouterWrapperContext";
 
 const Home = () => {
-  const router = useRouter();
+  const { setTransitionDisable } = useRouterWrapper();
 
-  const onClickLogout = async () => {
-    // 프론트 테스트용 관리자 계정
-    if ((await getCookie("accessToken")) == "admin") {
-      alert("관리자 로그아웃 되었습니다.");
-      deleteToken();
-      router.push("/auth/signin");
-      return;
-    }
-
-    await signOutRequest().then((responseBody: ResponseBody<ResponseDto>) => {
-      if (responseBody) {
-        const { code } = responseBody;
-        if (code == ResponseCode.SUCCESS) {
-          alert("로그아웃 되었습니다.");
-          deleteToken();
-          router.push("/auth/signin");
-          return;
-        }
-      }
-      alert("로그아웃 실패");
-    });
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setTransitionDisable(false);
+    }, 500);
+  }, []);
 
   return (
-    <Box>
-      <Button
-        variant="text"
-        size="small"
-        sx={{
-          textDecoration: "underline",
-          textUnderlineOffset: 4,
-          position: "absolute",
-        }}
-        onClick={onClickLogout}
-      >
-        Logout
-      </Button>
-      {/* <Carousel /> */}
-    </Box>
+    <Stack direction="column" spacing={6} marginY={"auto"} marginX={2}>
+      <Layout type={"me"} />
+    </Stack>
   );
 };
 

@@ -13,8 +13,8 @@ import { signInRequest } from "app/_api/auth";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { saveToken } from "public/util/cookies";
+import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 
-// interface ISignInForm extends SignInRequestDto {}
 const SignInForm = () => {
   const { handleSubmit, control } = useForm<SignInRequestDto>({
     mode: "onBlur",
@@ -25,6 +25,7 @@ const SignInForm = () => {
   });
 
   const router = useRouter();
+  const { setTransitionDisable } = useRouterWrapper();
   const signInResponse = (
     responseBody: ResponseBody<SignInResponseDto>
   ): void => {
@@ -42,6 +43,7 @@ const SignInForm = () => {
 
       saveToken(token, expirationTime);
 
+      setTransitionDisable(true);
       router.push("/home");
       return;
     }

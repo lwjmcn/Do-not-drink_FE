@@ -1,13 +1,15 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import DownArrow from "./DownArrow";
-import Category from "./Category";
-import AddFriend from "./AddFriend";
+"use client";
+
+import { Button, Stack, Typography } from "@mui/material";
 import Cube from "./Cube";
 import ReactionButton from "./ReactionButton";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Suspense } from "react";
+import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 
 interface ILayoutProps {
-  type: "me" | "friend" | "add";
+  type: "me" | "friend";
 }
 const Layout = (props: ILayoutProps) => {
   const money = 500000;
@@ -17,66 +19,61 @@ const Layout = (props: ILayoutProps) => {
 
   const router = useRouter();
 
-  const layoutConfig = {
-    me: { title: money.toLocaleString(), showCube: true },
-    friend: { title: name + " 님", showCube: true },
-    add: { title: "", showCube: false },
-  };
-  const { title, showCube } = layoutConfig[props.type];
-
   return (
-    <Box width={"100vw"}>
-      <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
-        <Box
+    <Stack
+      direction={"column"}
+      spacing={2}
+      marginY={"auto"}
+      alignItems={"center"}
+    >
+      {props.type === "me" && (
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          onClick={() => alert("목표금액설정하기")}
+        >
+          <Typography variant="h2">{money.toLocaleString()}</Typography>
+          <KeyboardArrowRightRoundedIcon style={{ color: "#717171" }} />
+        </Stack>
+      )}
+      {props.type === "friend" && (
+        <Typography variant="h2">{name + " 님"}</Typography>
+      )}
+      <Suspense>
+        <Link href={"/category"}>
+          <Cube filename="milkbox_origin.glb" />
+        </Link>
+      </Suspense>
+      <Stack direction="row" spacing={2} alignItems={"center"}>
+        <ReactionButton
+          isLike={true}
+          count={likes}
+          enabled={props.type === "friend"}
+        />
+
+        <Button
+          variant="text"
+          onClick={() => router.push("/input")}
           sx={{
-            flex: 1,
-            alignSelf: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            marginTop: 8,
-            gap: 4,
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            bgcolor: "#FFD67D",
+            fontSize: 16,
+            visibility: props.type === "me" ? "visible" : "hidden",
           }}
         >
-          {title && <Typography variant="h2">{title}</Typography>}
-          {showCube ? <Cube filename="milkbox_origin.glb" /> : <AddFriend />}
-          {props.type !== "add" && (
-            <Stack direction="row" spacing={2} alignItems={"center"}>
-              <ReactionButton
-                isLike={true}
-                count={likes}
-                enabled={props.type === "friend"}
-              />
-
-              <Button
-                variant="contained"
-                onClick={() => router.push("/input")}
-                sx={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 2,
-                  fontSize: 16,
-                  visibility: props.type === "me" ? "visible" : "hidden",
-                }}
-              >
-                <Typography variant="h5">한 입</Typography>
-              </Button>
-              <ReactionButton
-                isLike={false}
-                count={dislikes}
-                enabled={props.type === "friend"}
-              />
-            </Stack>
-          )}
-        </Box>
-
-        <Box sx={{ visibility: props.type === "me" ? "visible" : "hidden" }}>
-          <DownArrow />
-        </Box>
-      </Box>
-      {props.type === "me" && <Category />}
-    </Box>
+          <Typography variant="button" color="#fff">
+            한 입
+          </Typography>
+        </Button>
+        <ReactionButton
+          isLike={false}
+          count={dislikes}
+          enabled={props.type === "friend"}
+        />
+      </Stack>
+    </Stack>
   );
 };
 export default Layout;

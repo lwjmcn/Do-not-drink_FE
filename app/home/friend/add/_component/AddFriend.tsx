@@ -1,9 +1,18 @@
+"use client";
+
 import Add from "@mui/icons-material/AddRounded";
 import { Box, Stack, Typography } from "@mui/material";
 
 const AddFriend = () => {
   return (
-    <Stack direction={"column"} alignItems={"center"}>
+    <Stack
+      direction="column"
+      spacing={6}
+      marginX={2}
+      flex={1}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
       <Box
         sx={{
           display: "flex",

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { OAuthSignUpResponseDto } from "app/_api/response/auth.response.dto";
 import { SocialLoginType } from "public/type/social_login";
 import { saveToken } from "public/util/cookies";
+import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 
 const accountIdPattern = /^[a-zA-Z0-9]{4,20}$/;
 const oauthSignUpFormSchema = z.object({
@@ -29,7 +30,7 @@ const oauthSignUpFormSchema = z.object({
     }),
   socialLoginType: z.nativeEnum(SocialLoginType),
   themeId: z.number().int().positive(),
-tokenId: z.string().trim().min(1, { message: "인증 정보가 없습니다." }),
+  tokenId: z.string().trim().min(1, { message: "인증 정보가 없습니다." }),
 });
 
 type IOAuthSignUpForm = z.infer<typeof oauthSignUpFormSchema>;
@@ -55,6 +56,7 @@ const OAuthSignUpFormProvider = ({
   const { handleSubmit } = form;
 
   const router = useRouter();
+  const { setTransitionDisable } = useRouterWrapper();
   const oauth2SignUpResponse = (
     responseBody: ResponseBody<OAuthSignUpResponseDto>
   ): void => {
@@ -74,6 +76,7 @@ const OAuthSignUpFormProvider = ({
 
       alert(message);
       saveToken(token, expirationTime);
+      setTransitionDisable(true);
       router.push("/home");
       return;
     }
