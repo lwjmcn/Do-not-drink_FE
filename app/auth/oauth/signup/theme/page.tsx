@@ -3,8 +3,10 @@ import ThemeSelect from "../../../_component/ThemeSelect";
 
 const ChooseTheme = () => {
   return (
-    <Stack direction={"column"} spacing={2} flex={1}>
-      <Typography variant="h2">Select Your Theme</Typography>
+    <Stack direction="column" spacing={6} marginY={"auto"} marginX={2}>
+      <Typography variant="h4" alignSelf={"center"} color="#717171">
+        <span style={{ color: "#FE9600" }}>테마</span>를 선택해주세요
+      </Typography>
 
       {/* Theme Select */}
       <ThemeSelect />

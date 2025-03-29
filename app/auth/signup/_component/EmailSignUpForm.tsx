@@ -71,8 +71,15 @@ const EmailSignUpForm = () => {
           ),
         }}
       />
-      <Button type="button" variant="contained" onClick={onClickNext}>
-        <Typography>다음으로</Typography>
+      <Button
+        type="button"
+        variant="text"
+        onClick={onClickNext}
+        sx={{ bgcolor: "#fff" }}
+      >
+        <Typography variant="button" color="#000">
+          다음으로
+        </Typography>
       </Button>
     </Stack>
   );

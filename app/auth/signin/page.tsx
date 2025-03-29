@@ -5,8 +5,10 @@ import KakaoSignin from "./_component/KakaoSignin";
 
 const SignIn = () => {
   return (
-    <Stack direction={"column"} gap={2}>
-      <Typography variant="h2">Sign in</Typography>
+    <Stack direction="column" spacing={6} marginY={"auto"} marginX={2}>
+      <Typography variant="h1" alignSelf={"center"} color={"#FFBA18"}>
+        Do Not Drink
+      </Typography>
 
       {/* SNS Sign in */}
       <KakaoSignin />

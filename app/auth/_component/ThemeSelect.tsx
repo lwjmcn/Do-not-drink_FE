@@ -12,29 +12,27 @@ export interface ITheme {
 const data: ITheme[] = [
   {
     id: 1,
-    name: "테마1",
-    color: "#abcdef",
-    fileUrl: "/image/google.svg",
+    name: "오렌지주스",
+    color: "#FFD67D",
+    fileUrl: "/image/orange_juice.png",
   },
   {
     id: 2,
-    name: "테마2",
-    color: "#234897",
-    fileUrl: "/image/kakao.svg",
+    name: "포도주스",
+    color: "#F1CAEC",
+    fileUrl: "/image/grape_juice.png",
   },
   {
     id: 3,
-    name: "테마3",
-    color: "#dff90e",
-    fileUrl:
-      "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name: "레몬주스",
+    color: "#FFFEA2",
+    fileUrl: "/image/lemon_juice.png",
   },
   {
     id: 4,
     name: "테마4",
-    color: "#fa1334",
-    fileUrl:
-      "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    color: "#FFC5C2",
+    fileUrl: "/image/google.svg",
   },
 ]; // TODO: 서버에서 받아오기
 
@@ -44,7 +42,8 @@ const ThemeSelect = () => {
       {/* <Input name="themeId" label="테마" /> */}
       <Grid
         container
-        spacing={1}
+        rowSpacing={2}
+        columnSpacing={1}
         flex={1}
         maxWidth={400}
         width={"100%"}
@@ -58,8 +57,10 @@ const ThemeSelect = () => {
           </Grid>
         ))}
       </Grid>
-      <Button type="submit" variant="contained">
-        <Typography>가입 완료하기</Typography>
+      <Button type="submit" variant="text" sx={{ bgcolor: "#fff" }}>
+        <Typography variant="button" color="#000">
+          가입 완료하기
+        </Typography>
       </Button>
     </Stack>
   );
