@@ -29,7 +29,7 @@ const History = async ({
 
   return (
     <Box padding={2}>
-      <Box margin={2}>
+      <Box>
         <Typography fontSize={60} marginLeft={-1}>
           🥄
         </Typography>
