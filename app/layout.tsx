@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import MainLayout from "@component/MainLayout";
+import MediaSizeDisplay from "@component/media_query/MedaiSizeDisplay";
 
 export const metadata: Metadata = {
   title: "Budge",
@@ -15,9 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body style={{ backgroundColor: "#fff6e1" }}>
         <AppRouterCacheProvider>
           <MainLayout>{children}</MainLayout>
+          <MediaSizeDisplay />
         </AppRouterCacheProvider>
       </body>
     </html>
