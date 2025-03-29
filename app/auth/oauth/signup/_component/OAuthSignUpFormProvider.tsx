@@ -29,6 +29,7 @@ const oauthSignUpFormSchema = z.object({
     }),
   socialLoginType: z.nativeEnum(SocialLoginType),
   themeId: z.number().int().positive(),
+tokenId: z.string().trim().min(1, { message: "인증 정보가 없습니다." }),
 });
 
 type IOAuthSignUpForm = z.infer<typeof oauthSignUpFormSchema>;
@@ -38,6 +39,7 @@ const defaultValues: IOAuthSignUpForm = {
   accountId: "",
   socialLoginType: SocialLoginType.KAKAO,
   themeId: 1,
+  tokenId: "",
 };
 
 const OAuthSignUpFormProvider = ({
@@ -63,8 +65,8 @@ const OAuthSignUpFormProvider = ({
     let message = "";
     if (code == ResponseCode.DUPLICATE_ID)
       message = "이미 존재하는 아이디입니다.";
-    if (code == ResponseCode.NO_SESSION_INFO)
-      message = "세션이 만료되었습니다.";
+    // if (code == ResponseCode.NO_SESSION_INFO)
+    //   message = "세션이 만료되었습니다.";
     if (code == ResponseCode.DATABASE_ERROR)
       message = "데이터베이스 오류입니다.";
     if (code == ResponseCode.SUCCESS) {

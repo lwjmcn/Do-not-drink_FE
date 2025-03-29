@@ -15,6 +15,7 @@ export interface OAuthSignUpRequestDto {
   nickname: string;
   socialLoginType: SocialLoginType;
   themeId: number;
+  tokenId: string;
 }
 export interface SignInRequestDto {
   email: string;

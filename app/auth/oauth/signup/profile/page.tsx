@@ -14,6 +14,7 @@ const OAuthSignUp = () => {
   useEffect(() => {
     setValue("nickname", params.get("nickname") ?? "");
     setValue("accountId", params.get("accountId") ?? "");
+    setValue("tokenId", params.get("tokenId") ?? "");
   }, [params, setValue]);
 
   return (
