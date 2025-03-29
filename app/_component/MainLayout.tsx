@@ -17,11 +17,10 @@ const MainLayout = ({ children }: IMainLayoutProps) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          maxWidth: { xs: "90%", sm: "90%", md: "90%", lg: "450px" },
+          maxWidth: { xs: "90%", sm: "450px", md: "450px", lg: "450px" },
           minHeight: "100vh",
           marginX: "auto",
           paddingY: 2,
-          backgroundColor: "background.default",
         }}
       >
         <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
