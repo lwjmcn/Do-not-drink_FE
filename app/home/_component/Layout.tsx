@@ -1,12 +1,13 @@
 "use client";
 
 import { Button, Stack, Typography } from "@mui/material";
-import Cube from "./Cube";
 import ReactionButton from "./ReactionButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import Budget from "./Budget";
+import { useRouterWrapper } from "./page_transition/RouterWrapperContext";
+import GLTFViewer from "./GLTFViewer";
 
 interface ILayoutProps {
   type: "me" | "friend";
@@ -18,6 +19,7 @@ const Layout = (props: ILayoutProps) => {
   const dislikes = 4;
 
   const router = useRouter();
+  const { setTransitionDisable } = useRouterWrapper();
 
   return (
     <Stack
@@ -31,8 +33,8 @@ const Layout = (props: ILayoutProps) => {
         <Typography variant="h2">{name + " 님"}</Typography>
       )}
       <Suspense>
-        <Link href={"/category"}>
-          <Cube filename="milkbox_origin.glb" />
+        <Link href={"/category"} onClick={() => setTransitionDisable(true)}>
+          <GLTFViewer filename="orange_juice.glb" />
         </Link>
       </Suspense>
       <Stack direction="row" spacing={2} alignItems={"center"}>

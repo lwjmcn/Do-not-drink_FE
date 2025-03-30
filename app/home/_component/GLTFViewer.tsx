@@ -5,10 +5,10 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-interface ICubeProps {
+interface GLTFViewerProps {
   filename: string;
 }
-const Cube = (props: ICubeProps) => {
+const GLTFViewer = (props: GLTFViewerProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,20 +17,22 @@ const Cube = (props: ICubeProps) => {
 
     // scene
     const scene = new THREE.Scene();
-    // scene.background = new THREE.Color(0xeeeeee);
+    scene.background = new THREE.Color("#fff6e1");
+
     //camera
     const camera = new THREE.PerspectiveCamera(
-      45,
+      60,
       mount.clientWidth / mount.clientHeight,
       0.1,
-      5
+      10
     );
-    camera.position.z = 2;
+    camera.position.z = 3;
+
     //renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.setClearColor(0xffffff, 0);
     mount.appendChild(renderer.domElement);
+
     //control
     const controls = new OrbitControls(camera, mount);
     controls.enableDamping = true;
@@ -40,59 +42,27 @@ const Cube = (props: ICubeProps) => {
     controls.enablePan = false;
     controls.update();
 
-    // // floor
-    // const floorGeometry = new THREE.PlaneGeometry(10, 10);
-    // const floorMaterial = new THREE.MeshPhongMaterial({
-    //   color: "background.default",
-    //   depthWrite: false,
-    // });
-    // const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    // floor.rotation.x = -Math.PI / 2;
-    // floor.position.y = -0.7;
-    // scene.add(floor);
-
-    // // cube
-    // const geometry = new THREE.BoxGeometry();
-    // const materials = new THREE.MeshPhongMaterial({
-    //   color: 0x44aa88,
-    //   specular: 0x44ff44,
-    // });
-    // const cube = new THREE.Mesh(geometry, materials);
-    // scene.add(cube);
-    // //edge
-    // const edgesGeometry = new THREE.EdgesGeometry(geometry);
-    // const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-    // const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-    // cube.add(edges);
-
     // gltf object
     if (props.filename) {
       const loader = new GLTFLoader();
-      console.log(`/gltf/${props.filename}`);
-      // 갑자기 302 Found 에러 뜸... 경로 문제 근데 auth 하기 전엔 멀쩡했음
       loader.load(`/gltf/${props.filename}`, (gltf) => {
         const model = gltf.scene;
-        model.scale.set(1.2, 1.2, 1.2);
-        model.position.set(0, -0.1, 0);
-        model.rotation.y = Math.PI / 6;
-        model.rotation.x = Math.PI / 10;
+        model.position.set(0, -0.5, 0);
         scene.add(model);
       });
     }
 
     // light
-    const light = new THREE.DirectionalLight(0xffffff, 0.5);
-    light.position.set(0, 5, -0.5);
-    scene.add(light);
     const frontLight = new THREE.DirectionalLight(0xffffff, 0.5);
     frontLight.position.set(0, 1, 3);
     scene.add(frontLight);
-    // const ambientLight = new THREE.AmbientLight("background.default", 2.4); // floor color
-    // scene.add(ambientLight);
+
+    const ambientLight = new THREE.AmbientLight("background.orange", 1); // floor color
+    scene.add(ambientLight);
 
     // // shadow
     // renderer.shadowMap.enabled = true;
-    // cube.castShadow = true;
+    // GLTFViewer.castShadow = true;
     // floor.receiveShadow = true;
     // light.castShadow = true;
     // light.shadow.radius = 4;
@@ -155,4 +125,4 @@ const Cube = (props: ICubeProps) => {
     />
   );
 };
-export default Cube;
+export default GLTFViewer;
