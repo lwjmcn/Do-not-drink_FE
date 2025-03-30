@@ -45,11 +45,18 @@ const ExpenseFormProvider = ({ children }: { children: React.ReactNode }) => {
     const { code } = responseBody;
 
     let message = "";
-    if (code == ResponseCode.DATABASE_ERROR)
+    if (code == ResponseCode.DATABASE_ERROR) {
       message = "데이터베이스 오류입니다.";
-
-    alert(message);
-    router.push("/auth/signin");
+      alert(message);
+      router.push("/add-expense/fail");
+      return;
+    }
+    if (code == ResponseCode.SUCCESS) {
+      message = "지출이 등록되었습니다";
+      alert(message);
+      router.push("/add-expense/complete");
+      return;
+    }
   };
   const onSubmit = async (data: IAddExpenseForm) => {
     console.log(data);
