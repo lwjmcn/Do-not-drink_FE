@@ -35,7 +35,7 @@ const AutoCarousel = ({
       setScrollPosition((prev) => {
         const newPosition = prev + delta;
         // 이미지 세트 하나의 너비를 넘어가면 리셋 (3개의 이미지 세트 중 첫 번째가 완전히 지나가면)
-        const imageSetWidth = 300 * images.length;
+        const imageSetWidth = (width + 10) * images.length;
 
         if (newPosition >= imageSetWidth) {
           return newPosition - imageSetWidth;
@@ -54,7 +54,6 @@ const AutoCarousel = ({
 
   return (
     <Box>
-      {/* sx={{ overflow: "hidden" }}> */}
       <Box
         sx={{
           transform: `translateX(-${scrollPosition}px)`,

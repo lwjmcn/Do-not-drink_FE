@@ -13,7 +13,7 @@ const InitialPage = () => {
       <Typography variant="h1" alignSelf={"center"} color={"#FFBA18"}>
         Do Not Drink
       </Typography>
-      <AutoCarousel images={images} width={240} />
+      <AutoCarousel images={images} width={240} height={240} />
       <ButtonLink title="로그인" href={"/auth/signin"} />
     </Stack>
   );
