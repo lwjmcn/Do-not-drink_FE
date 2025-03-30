@@ -1,46 +1,80 @@
-import { Card as MuiCard, alpha, Stack, styled, Modal } from "@mui/material";
+"use client";
+import {
+  Box,
+  Backdrop,
+  Button,
+  Typography,
+  Stack,
+  Divider,
+} from "@mui/material";
+import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-const Background = styled(Stack)(({ theme }) => ({
-  height: "100vh",
-  padding: 40,
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    zIndex: -1,
-    inset: 0,
-    backgroundColor: alpha(theme.palette.background.default, 0.1),
-    backdropFilter: "blur(5px)",
-  },
-}));
-const Card = styled(MuiCard)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  width: "100%",
-  padding: 35,
-  gap: 20,
-  margin: "auto",
-  [theme.breakpoints.up("sm")]: {
-    maxWidth: "500px",
-    paddingLeft: 75,
-    paddingRight: 75,
-  },
-  [theme.breakpoints.up("md")]: {
-    maxWidth: "700px",
-    paddingLeft: 175,
-    paddingRight: 175,
-  },
-  boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
-  background: "!important background.default",
-}));
+interface ModalContainerProps {
+  children: React.ReactNode;
+  onClickPositive?: () => void;
+}
+export default function ModalContainer(props: ModalContainerProps) {
+  const router = useRouter();
+  const { setTransitionDisable } = useRouterWrapper();
 
-const ModalContainer = ({ children }: { children: React.ReactNode }) => {
+  const onClickPositive = () => {
+    if (props.onClickPositive) {
+      props.onClickPositive();
+    } else {
+      setTransitionDisable(true);
+      router.back();
+    }
+  };
+  const onClickNegative = () => {
+    setTransitionDisable(true);
+    router.back();
+  };
+
   return (
-    <Modal open sx={{ zIndex: 1001 }}>
-      <Background>
-        <Card variant="outlined">{children}</Card>
-      </Background>
-    </Modal>
+    <>
+      <Backdrop open sx={{ zIndex: 1001, backdropFilter: "blur(5px)" }}>
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Box
+            sx={{
+              width: "300px",
+              bgcolor: "#fff",
+              boxShadow: 24,
+              borderRadius: 4,
+              padding: 4,
+              paddingBottom: 2,
+            }}
+          >
+            {props.children}
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems={"center"}
+              justifySelf={"center"}
+            >
+              <Button variant="text" onClick={onClickPositive}>
+                <Typography variant="button" color="#717171">
+                  확인
+                </Typography>
+              </Button>
+              <Divider
+                orientation="vertical"
+                style={{ height: 16, border: "1px solid #717171" }}
+              />
+              <Button variant="text" onClick={onClickNegative}>
+                <Typography variant="button" color="#717171">
+                  취소
+                </Typography>
+              </Button>
+            </Stack>
+          </Box>
+        </motion.div>
+      </Backdrop>
+    </>
   );
-};
-export default ModalContainer;
+}
