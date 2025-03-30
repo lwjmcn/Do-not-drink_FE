@@ -26,16 +26,7 @@ const Layout = (props: ILayoutProps) => {
       marginY={"auto"}
       alignItems={"center"}
     >
-      {props.type === "me" && (
-        <Stack
-          direction={"row"}
-          alignItems={"center"}
-          onClick={() => alert("목표금액설정하기")}
-        >
-          <Typography variant="h2">{money.toLocaleString()}</Typography>
-          <KeyboardArrowRightRoundedIcon style={{ color: "#717171" }} />
-        </Stack>
-      )}
+      {props.type === "me" && <Budget />}
       {props.type === "friend" && (
         <Typography variant="h2">{name + " 님"}</Typography>
       )}

@@ -51,3 +51,8 @@ a {
     color-scheme: dark;
   }
 }
+
+@font-face {
+  font-family: "GMarketSans";
+  src: url("/font/GmarketSansTTFBold.ttf") format("truetype");
+}
