@@ -6,6 +6,7 @@ import { Stack } from "@mui/material";
 
 export default function MenuButton() {
   const router = useRouter();
+
   return (
     <Stack
       direction={"row"}
@@ -16,7 +17,7 @@ export default function MenuButton() {
     >
       {/* 알림 */}
       <button
-        onClick={() => alert("알림 기능은 준비중입니다.")}
+        onClick={() => router.push("/notification")}
         style={{
           border: "none",
           background: "none",
@@ -27,7 +28,7 @@ export default function MenuButton() {
       </button>
       {/* 기타 메뉴 */}
       <button
-        onClick={() => alert("메뉴 기능은 준비중입니다.")}
+        onClick={() => router.push("/menu")}
         style={{
           border: "none",
           background: "none",
