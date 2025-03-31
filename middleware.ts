@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 
-const protectedRoutes = ["/home", "/input", "/category"];
-const publicRoutes = ["/auth"]; // "/"
+const publicRoutes = "/auth";
+
 const middleware = async (request: NextRequest) => {
   const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -16,23 +16,13 @@ const middleware = async (request: NextRequest) => {
   console.log("isAuth", isAuth);
 
   // no login: protected -> public
-  if (!isAuth) {
-    for (const route of protectedRoutes) {
-      if (request.nextUrl.pathname.startsWith(route)) {
-        return NextResponse.redirect(new URL("/", request.nextUrl.origin));
-      }
-    }
+  if (!isAuth && !request.nextUrl.pathname.startsWith(publicRoutes)) {
+    return NextResponse.redirect(new URL("/auth", request.nextUrl.origin));
   }
 
   // login: public -> protected
-  if (isAuth) {
-    if (request.nextUrl.pathname === "/")
-      return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
-    for (const route of publicRoutes) {
-      if (request.nextUrl.pathname.startsWith(route)) {
-        return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
-      }
-    }
+  if (isAuth && request.nextUrl.pathname.startsWith(publicRoutes)) {
+    return NextResponse.redirect(new URL("/home", request.nextUrl.origin));
   }
 
   return NextResponse.next();
