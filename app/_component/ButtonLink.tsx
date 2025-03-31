@@ -15,6 +15,7 @@ export default function ButtonLink(props: ButtonLinkProps) {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
+          paddingX: 2,
         }}
       >
         <Typography variant="button">{props.title}</Typography>

@@ -5,6 +5,7 @@ import {
   ReactToRequestDto,
 } from "./request/budget.request.dto";
 import {
+  BudgetRemainingResponseDto,
   BudgetSetResponseDto,
   ReactToResponseDto,
 } from "./response/budget.response.dto";
@@ -15,7 +16,7 @@ const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
 export const getRemainingBudget = async () => {
   const result = await axiosInstance
     .get(`${API_URL}/users/me/budgets/current/remains`)
-    .then(responseHandler<ResponseDto>)
+    .then(responseHandler<BudgetRemainingResponseDto>)
     .catch(errorHandler);
   return result;
 };
@@ -28,22 +29,41 @@ export const setBudget = async (requestBody: BudgetSetRequestDto) => {
   return result;
 };
 
+export const myReactionEventUrl = () =>
+  `${API_URL}/users/me/budgets/current/reactions`;
 export const subscribeMyReaction = async () => {
-  const result = await axiosInstance.get(
+  const eventSource = new EventSource(
     `${API_URL}/users/me/budgets/current/reactions`
   );
-  // TODO sse emitter
 
-  return;
-};
+  eventSource.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+    console.log("MyReactionEvent data:", data);
+  });
 
+  eventSource.onerror = (error) => {
+    console.error("Error occurred:", error);
+    eventSource.close(); // Close the connection on error
+  };
+}; // TODO sse emitter
+
+export const friendReactionEventUrl = (friendId: number) =>
+  `${API_URL}/users/${friendId}/budgets/current/reactions`;
 export const subscribeReaction = async (friendId: number) => {
-  const result = await axiosInstance.get(
+  const eventSource = new EventSource(
     `${API_URL}/users/${friendId}/budgets/current/reactions`
   );
-  // TODO sse emitter
-  return;
-};
+
+  eventSource.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+    console.log("FriendReactionEvent data:", data);
+  });
+
+  eventSource.onerror = (error) => {
+    console.error("Error occurred:", error);
+    eventSource.close();
+  };
+}; // TODO sse emitter
 
 export const sendReaction = async (
   friendId: number,

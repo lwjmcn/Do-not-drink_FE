@@ -26,7 +26,7 @@ export default function MenuButton() {
           cursor: "pointer",
         }}
       >
-        <Badge
+        {/* <Badge
           variant="dot"
           invisible={false}
           sx={{
@@ -37,9 +37,10 @@ export default function MenuButton() {
               height: 8,
             },
           }}
-        >
-          <NotificationsNoneRoundedIcon />
-        </Badge>
+        > */}
+        {/* TODO 알림 구독 -> 뱃지 표시 */}
+        <NotificationsNoneRoundedIcon />
+        {/* </Badge> */}
       </button>
       {/* 기타 메뉴 */}
       <button

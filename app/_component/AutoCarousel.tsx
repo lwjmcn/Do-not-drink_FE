@@ -53,7 +53,7 @@ const AutoCarousel = ({
   }, [speed]);
 
   return (
-    <Box overflow={"hidden"}>
+    <Box>
       <Box
         sx={{
           transform: `translateX(-${scrollPosition}px)`,

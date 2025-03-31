@@ -1,40 +1,42 @@
 "use client";
 
-import {
-  Button,
-  Autocomplete,
-  Stack,
-  Typography,
-  Paper,
-  Popper,
-} from "@mui/material";
-import { useFormContext } from "react-hook-form";
+import { Button, Autocomplete, Stack, Typography } from "@mui/material";
 import Input from "@component/Input";
-import { useRouter } from "next/navigation";
-import { IAddTransactionForm } from "./TransactionFormProvider";
-import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 import CategoryChip from "./CategoryChip";
+import { getCategories } from "app/_api/expense";
+import { ResponseBody } from "app/_api/response/response_dto";
+import {
+  CategoryDto,
+  CategoryListResponseDto,
+} from "app/_api/response/expense.response.dto";
+import ResponseCode from "public/type/response_code";
+import { useEffect, useState } from "react";
 
 export default function TransactionForm() {
-  const router = useRouter();
-  const { setTransitionDisable } = useRouterWrapper();
+  const [categoryList, setCategoryList] = useState<CategoryDto[]>([]);
 
-  const { trigger } = useFormContext<IAddTransactionForm>();
-
-  const onClickNext = async () => {
-    // 이메일 중복 확인은 마지막에 백엔드에서 진행
-    const isValid = await trigger([
-      "datetime",
-      "categoryId",
-      "name",
-      "amount",
-      "description",
-    ]);
-    if (!isValid) return;
-
-    setTransitionDisable(true);
-    router.push("/home");
+  const getCategoriesApi = async () => {
+    await getCategories().then(getCategoriesApiResponse);
   };
+  const getCategoriesApiResponse = (
+    responseBody: ResponseBody<CategoryListResponseDto>
+  ) => {
+    if (!responseBody) return;
+
+    const { code, message, categories } =
+      responseBody as CategoryListResponseDto;
+
+    if (code == ResponseCode.SUCCESS) {
+      setCategoryList(categories);
+      console.log("Categories: ", categories);
+    } else {
+      console.log("getCategories: ", message);
+    }
+  };
+
+  useEffect(() => {
+    getCategoriesApi();
+  }, []);
 
   return (
     <Stack direction="column" spacing={4}>
@@ -45,12 +47,8 @@ export default function TransactionForm() {
           type="datetime-local"
           slotProps={{ inputLabel: { shrink: true } }}
         />
-        <Autocomplete
-          options={[
-            { categoryId: 1, name: "식비" },
-            { categoryId: 2, name: "교통비" },
-            { categoryId: 3, name: "문화생활비" },
-          ]}
+        {/* <Autocomplete
+          options={categoryList} // TODO category 403
           getOptionLabel={(option) => option.name}
           renderInput={(params) => (
             <Input
@@ -91,7 +89,8 @@ export default function TransactionForm() {
               margin: 0,
             },
           }}
-        />
+        /> */}
+        <Input name="categoryId" label="카테고리" type="number" />
         <Input
           name="name"
           label="제목"
@@ -102,8 +101,13 @@ export default function TransactionForm() {
           name="amount"
           label="금액"
           type="number"
+          inputProps={{ inputMode: "numeric" }}
           InputProps={{
-            endAdornment: <Typography>원</Typography>,
+            endAdornment: (
+              <Typography variant="body2" sx={{ color: "#717171" }}>
+                원
+              </Typography>
+            ),
           }}
           slotProps={{ inputLabel: { shrink: true } }}
         />
@@ -111,6 +115,7 @@ export default function TransactionForm() {
           name="description"
           label="메모"
           type="text"
+          required={false}
           multiline
           maxRows={4}
           slotProps={{ inputLabel: { shrink: true } }}

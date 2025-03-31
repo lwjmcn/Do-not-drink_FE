@@ -90,12 +90,12 @@ const SignUpFormProvider = ({ children }: { children: React.ReactNode }) => {
       message = "회원가입이 완료되었습니다.";
     }
 
-    alert(message);
+    console.log("SignUp: ", message);
     router.push("/auth/signin");
   };
   const onSubmit = async (data: ISignUpForm) => {
-    console.log(data);
-    alert(JSON.stringify(data));
+    // console.log(data);
+    // console.log(JSON.stringify(data));
 
     // data omitting passwordCheck
     const dataWithoutPasswordCheck: SignUpRequestDto = {

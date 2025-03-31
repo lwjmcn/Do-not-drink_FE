@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Divider,
@@ -6,26 +8,44 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import { getTransactionsInCategory } from "app/_api/expense";
+import {
+  TransactionDto,
+  TransactionListInCategoryResponseDto,
+} from "app/_api/response/expense.response.dto";
+import { ResponseBody } from "app/_api/response/response_dto";
+import { useParams } from "next/navigation";
+import ResponseCode from "public/type/response_code";
+import { useEffect, useState } from "react";
 
-const History = async ({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) => {
-  const category = decodeURI((await params).category);
+const History = () => {
+  const { categoryId } = useParams();
+  const [categoryName, setCategoryName] = useState<string>("");
+  const [transactionList, setTransactionList] = useState<TransactionDto[]>([]);
 
-  const list = [
-    { id: 1, name: "돈까스", amount: 7000, date: "2021-10-01 00:02:20" },
-    { id: 2, name: "라면", amount: 2000, date: "2021-10-02 12:30:45" },
-    { id: 3, name: "커피", amount: 6000, date: "2021-10-03 08:15:30" },
-    { id: 4, name: "콜라", amount: 2000, date: "2021-10-04 14:45:00" },
-    { id: 5, name: "케이크", amount: 9000, date: "2021-10-05 16:20:10" },
-    { id: 6, name: "초밥", amount: 18000, date: "2021-10-06 19:00:00" },
-    { id: 7, name: "피자", amount: 10000, date: "2021-10-07 20:30:25" },
-    { id: 8, name: "치킨", amount: 23000, date: "2021-10-08 21:45:50" },
-    { id: 9, name: "햄버거", amount: 11000, date: "2021-10-09 18:15:35" },
-    { id: 10, name: "샐러드", amount: 10000, date: "2021-10-10 13:05:15" },
-  ];
+  const getTransactionsInCategoryApi = async () => {
+    await getTransactionsInCategory(Number(categoryId), 0, 20).then(
+      getTransactionsInCategoryApiResponse
+    );
+  };
+  const getTransactionsInCategoryApiResponse = (
+    responseBody: ResponseBody<TransactionListInCategoryResponseDto>
+  ) => {
+    if (!responseBody) return;
+    const { code, message, categoryName, transactions } =
+      responseBody as TransactionListInCategoryResponseDto;
+    if (code == ResponseCode.SUCCESS) {
+      console.log("TransactionsInCategory: ", transactions);
+      setTransactionList(transactions);
+      setCategoryName(categoryName);
+    } else {
+      console.log("getTransactionsInCategory: ", message);
+    }
+  };
+
+  useEffect(() => {
+    getTransactionsInCategoryApi();
+  }, []);
 
   return (
     <Box padding={2}>
@@ -33,10 +53,10 @@ const History = async ({
         <Typography fontSize={60} marginLeft={-1}>
           🥄
         </Typography>
-        <Typography variant={"h2"}>{category}</Typography>
+        <Typography variant={"h2"}>{categoryName}</Typography>
         <Typography variant="caption" color={"text.secondary"}>
           총{" "}
-          {list
+          {transactionList
             .map((item) => item.amount)
             .reduce((a, b) => a + b)
             .toLocaleString()}
@@ -52,13 +72,14 @@ const History = async ({
         }}
       />
       <List>
-        {list
+        {transactionList
           .sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            (a, b) =>
+              new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
           )
           .map((item) => (
             <ListItem
-              key={item.id}
+              key={item.transactionId}
               sx={{
                 paddingX: 0,
                 display: "flex",
@@ -74,7 +95,7 @@ const History = async ({
             >
               <ListItemText
                 primary={item.name}
-                secondary={item.date.replace(/-/g, ".")}
+                secondary={item.datetime.replace(/-/g, ".")}
               />
             </ListItem>
           ))}

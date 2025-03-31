@@ -1,38 +1,51 @@
 "use client";
 
 import { Grid, Typography } from "@mui/material";
+import { getCategories } from "app/_api/expense";
+import {
+  CategoryDto,
+  CategoryListResponseDto,
+} from "app/_api/response/expense.response.dto";
+import { ResponseBody } from "app/_api/response/response_dto";
 import { useRouter } from "next/navigation";
+import ResponseCode from "public/type/response_code";
+import { useState, useEffect } from "react";
 
 const Category = () => {
   const router = useRouter();
+  const [categoryList, setCategoryList] = useState<CategoryDto[]>([]);
 
-  const categories = [
-    { name: "식당", amount: 320050 },
-    { name: "월세", amount: 600000 },
-    { name: "교통", amount: 55000 },
-    { name: "옷·패션", amount: 73000 },
-    { name: "연뮤", amount: 140000 },
-    { name: "병원", amount: 45000 },
-    { name: "보험", amount: 30000 },
-    { name: "적금", amount: 100000 },
-    { name: "카페", amount: 43000 },
-    { name: "통신비", amount: 50000 },
-    { name: "기타", amount: 23000 },
-    { name: "기타", amount: 23000 },
-    { name: "기타", amount: 23000 },
-    { name: "기타", amount: 23000 },
-    { name: "기타", amount: 23000 },
-    { name: "기타", amount: 23000 },
-  ];
+  const getCategoriesApi = async () => {
+    await getCategories().then(getCategoriesApiResponse);
+  };
+  const getCategoriesApiResponse = (
+    responseBody: ResponseBody<CategoryListResponseDto>
+  ) => {
+    if (!responseBody) return;
+
+    const { code, message, categories } =
+      responseBody as CategoryListResponseDto;
+
+    if (code == ResponseCode.SUCCESS) {
+      setCategoryList(categories);
+      console.log("Categories: ", categories);
+    } else {
+      console.log("getCategories: ", message);
+    }
+  };
+
+  useEffect(() => {
+    getCategoriesApi();
+  }, []);
 
   return (
     <Grid container spacing={2} rowGap={4} marginY={3}>
-      {categories
+      {categoryList
         .sort((a, b) => b.amount - a.amount)
         .map((category, index) => (
           <Grid
             key={index}
-            onClick={() => router.push(`/category/${category.name}`)}
+            onClick={() => router.push(`/category/${category.categoryId}`)}
             item
             xs={index < 3 ? 4 : 3}
             alignItems={"center"}

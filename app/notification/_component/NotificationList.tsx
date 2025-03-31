@@ -1,20 +1,17 @@
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-  Stack,
-  Button,
-} from "@mui/material";
+"use client";
 
-import AnnouncementRoundedIcon from "@mui/icons-material/AnnouncementRounded";
-import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
+import { Stack } from "@mui/material";
 import { FriendStatusType } from "public/type/friend_status";
 import NotificationItem from "./NotificationItem";
 import EmptyNotification from "./Empty";
+import { getReceivedFriendRequests } from "app/_api/friend";
+import {
+  FriendReqDto,
+  FriendReqListResponseDto,
+} from "app/_api/response/friend.response.dto";
+import { ResponseBody } from "app/_api/response/response_dto";
+import ResponseCode from "public/type/response_code";
+import { useEffect, useState } from "react";
 
 interface NotificationData {
   friendRequestId: number;
@@ -24,33 +21,36 @@ interface NotificationData {
   status: FriendStatusType;
 }
 
-const emtpyList = [];
-const friendReqList: NotificationData[] = [
-  {
-    friendRequestId: 1,
-    userId: 1,
-    nickname: "이예진",
-    accountId: "yeyin",
-    status: FriendStatusType.READ,
-  },
-  {
-    friendRequestId: 2,
-    userId: 2,
-    nickname: "이예진",
-    accountId: "yeyin",
-    status: FriendStatusType.NOREAD,
-  },
-  {
-    friendRequestId: 3,
-    userId: 3,
-    nickname: "이예진",
-    accountId: "yeyin",
-    status: FriendStatusType.NOREAD,
-  },
-];
-
 export default function NotificationList() {
-  const sortNoread = (a: NotificationData, b: NotificationData) => {
+  const [friendRequests, setFriendRequests] = useState<FriendReqDto[]>([]);
+
+  const getReceivedFriendRequestsApi = async () => {
+    await getReceivedFriendRequests().then(
+      getReceivedFriendRequestsApiResponse
+    );
+  };
+  const getReceivedFriendRequestsApiResponse = (
+    responseBody: ResponseBody<FriendReqListResponseDto>
+  ) => {
+    if (!responseBody) return;
+    const { code, message, friendRequests } =
+      responseBody as FriendReqListResponseDto;
+    if (code == ResponseCode.SUCCESS) {
+      const filteredRequests = friendRequests.filter(
+        (request) => request.status !== FriendStatusType.REJECT // 거절한 요청은 표시하지 않음
+      );
+      setFriendRequests(filteredRequests);
+      console.log("getReceivedFriendRequests: ", filteredRequests);
+    } else {
+      console.log("getReceivedFriendRequests: ", message);
+    }
+  };
+
+  useEffect(() => {
+    getReceivedFriendRequestsApi();
+  }, []);
+
+  const sortNoread = (a: FriendReqDto, b: FriendReqDto) => {
     if (
       a.status === FriendStatusType.NOREAD &&
       b.status !== FriendStatusType.NOREAD
@@ -66,7 +66,7 @@ export default function NotificationList() {
     }
   };
 
-  if (emtpyList.length === 0) {
+  if (friendRequests.length === 0) {
     return <EmptyNotification />;
   } else {
     return (
@@ -76,14 +76,14 @@ export default function NotificationList() {
         spacing={1}
         sx={{ marginTop: 6 }}
       >
-        {friendReqList.sort(sortNoread).map((item) => (
+        {friendRequests.sort(sortNoread).map((friendReq) => (
           <NotificationItem
-            key={item.friendRequestId}
-            friendRequestId={item.friendRequestId}
-            userId={item.userId}
-            nickname={item.nickname}
-            accountId={item.accountId}
-            status={item.status}
+            key={friendReq.requestId}
+            friendRequestId={friendReq.requestId}
+            userId={friendReq.userId}
+            nickname={friendReq.nickname}
+            accountId={friendReq.accountId}
+            status={friendReq.status}
           />
         ))}
       </Stack>

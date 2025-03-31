@@ -3,7 +3,7 @@ import ResponseDto from "./response_dto";
 
 export interface FriendReqDto {
   requestId: number;
-  userId: string; // request sender
+  userId: number; // request sender
   nickname: string;
   accountId: string;
   status: FriendStatusType;

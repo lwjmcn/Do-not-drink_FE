@@ -31,7 +31,7 @@ const WebCam = () => {
       });
       setMediaStream(stream);
     } catch (error) {
-      console.log(error);
+      console.log("startCamera error: ", error);
     }
   }, [devices, selectedDeviceIndex]);
 
@@ -54,7 +54,7 @@ const WebCam = () => {
         const data = canvas.toDataURL("image/png");
         //   .replace("image/png", "image/octet-stream");
         // window.location.href = data;
-        console.log(data);
+        console.log("snapshot: ", data);
 
         // show the image
         setImgData(data);

@@ -16,13 +16,13 @@ export default function LogoutButton() {
       if (responseBody) {
         const { code } = responseBody;
         if (code == ResponseCode.SUCCESS) {
-          alert("로그아웃 되었습니다.");
+          console.log("로그아웃 되었습니다.");
           deleteToken();
           router.push("/auth/signin");
           return;
         }
       }
-      alert("로그아웃 실패");
+      console.log("로그아웃 실패");
     });
   };
 

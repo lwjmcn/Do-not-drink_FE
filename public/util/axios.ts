@@ -6,8 +6,11 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// axios 요청 시 헤더에 accessToken을 추가
+// axios.defaults.headers.common["Authorization"] = `Bearer ${getCookie(
+//   "accessToken"
+// )}`;
 axiosInstance.interceptors.request.use(async (config) => {
+  // axios 요청 시 헤더에 accessToken을 추가
   const accessToken = await getCookie("accessToken");
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

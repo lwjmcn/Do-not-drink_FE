@@ -15,6 +15,11 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { FriendStatusType } from "public/type/friend_status";
 import { stat } from "fs";
+import { respondToFriendRequest } from "app/_api/friend";
+import { FriendReqResRequestDto } from "app/_api/request/friend.request.dto";
+import { ResponseBody } from "app/_api/response/response_dto";
+import { FriendReqResResponseDto } from "app/_api/response/friend.response.dto";
+import ResponseCode from "public/type/response_code";
 
 interface NotificationItemProps {
   friendRequestId: number;
@@ -30,6 +35,26 @@ export default function NotificationItem({
   accountId,
   status,
 }: NotificationItemProps) {
+  const respondToFriendRequestApi = async (status: FriendStatusType) => {
+    const data: FriendReqResRequestDto = {
+      status: status,
+    };
+    await respondToFriendRequest(friendRequestId, data).then(
+      respondToFriendRequestApiResponse
+    );
+  };
+  const respondToFriendRequestApiResponse = (
+    responseBody: ResponseBody<FriendReqResResponseDto>
+  ) => {
+    if (!responseBody) return;
+    const { code, message } = responseBody as FriendReqResResponseDto;
+    if (code == ResponseCode.SUCCESS) {
+      console.log("수락했어욤욤");
+    } else {
+      console.log("respondToFriendRequest: ", message);
+    }
+  };
+
   return (
     <ListItem
       sx={{
@@ -57,19 +82,19 @@ export default function NotificationItem({
           }}
         >
           <Typography variant="body1" color="#000">
-            <span style={{ fontWeight: "600" }}>이예진</span> 님이 친구 요청을
-            보냈어요
+            <span style={{ fontWeight: "600" }}>{nickname}</span> 님이 친구
+            요청을 보냈어요
           </Typography>
         </Badge>
-
-        {/* 이예진 님과 친구가 되었습니다 */}
+        {/* {nickname} 님과 친구가 되었습니다 */}
 
         <Typography variant="caption" color="#717171">
-          2023.03.12 03:12:44
+          {`@${accountId}`}
         </Typography>
       </ListItemText>
       <Stack direction={"row"} spacing={1}>
         <Button
+          onClick={() => respondToFriendRequestApi(FriendStatusType.ACCEPT)}
           variant="contained"
           sx={{
             minWidth: 28,
@@ -82,6 +107,7 @@ export default function NotificationItem({
           <CheckRoundedIcon />
         </Button>
         <Button
+          onClick={() => respondToFriendRequestApi(FriendStatusType.REJECT)}
           variant="outlined"
           sx={{
             minWidth: 28,

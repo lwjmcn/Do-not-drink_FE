@@ -16,5 +16,8 @@ export const responseHandler = <T>(response: AxiosResponse) => {
 
 export const errorHandler = (error: AxiosError) => {
   if (!error.response || !error.response.data) return null;
+
+  console.log("errorHandler: ", error);
+
   return error.response.data as ResponseDto;
 };

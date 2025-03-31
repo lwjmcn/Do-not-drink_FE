@@ -33,13 +33,16 @@ const SignInForm = () => {
     const { code, token, expirationTime } = responseBody as SignInResponseDto;
 
     let message = "";
-    if (code == ResponseCode.SIGN_IN_FAIL)
+    if (code == ResponseCode.SIGN_IN_FAIL) {
       message = "이메일 또는 비밀번호가 일치하지 않습니다.";
+      // TODO: password에 error message 추가
+      return;
+    }
     if (code == ResponseCode.DATABASE_ERROR)
       message = "데이터베이스 오류입니다.";
     if (code == ResponseCode.SUCCESS) {
       message = "로그인이 완료되었습니다.";
-      alert(message);
+      console.log("SignIn: ", message);
 
       saveToken(token, expirationTime);
 
@@ -48,12 +51,12 @@ const SignInForm = () => {
       return;
     }
 
-    alert(message);
+    console.log("SignIn: ", message);
   };
 
   const onSubmit = async (data: SignInRequestDto) => {
-    console.log(data);
-    alert(JSON.stringify(data));
+    // console.log(data);
+    // console.log(JSON.stringify(data));
 
     await signInRequest(data).then(signInResponse);
   };

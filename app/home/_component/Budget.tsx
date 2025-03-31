@@ -1,23 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import SlotMachineCounter from "./SlotMachineCounter";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import Link from "next/link";
 
-export default function Budget() {
-  const [value, setValue] = useState(593900);
+interface BudgetProps {
+  remains: number;
+}
+export default function Budget({ remains }: BudgetProps) {
+  const [value, setValue] = useState<number>(0);
 
-  // 버튼 클릭 시 값 감소
-  const decreaseValue = () => {
-    setValue((prevValue) => prevValue - 3010);
-  };
+  useLayoutEffect(() => {
+    setValue(remains);
+  }, [remains]);
 
   return (
     <Stack direction={"row"} alignItems={"center"}>
       <SlotMachineCounter targetValue={value} />
-      <Link href={"/set-budget"}>
+      <Link href={"/set-budget/fail"}>
         <KeyboardArrowRightRoundedIcon style={{ color: "#717171" }} />
       </Link>
     </Stack>

@@ -1,41 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Paper } from "@mui/material";
 import FriendList from "./FriendList";
 import MyInfo from "./MyInfo";
 import SettingList from "./SettingList";
-
-// 타입 정의
-export interface Friend {
-  id: number;
-  nickname: string;
-  avatar?: string;
-  accountId: string;
-}
-
-export interface UserInfo {
-  id: string;
-  nickname: string;
-  avatar?: string;
-  friends: Friend[];
-}
-
-// 샘플 데이터
-const sampleUser: UserInfo = {
-  id: "user_test_123",
-  nickname: "이예진",
-  avatar: "/image/orange_juice.png",
-  friends: [
-    { id: 1, nickname: "구름달빛", accountId: "ksdjfh2" },
-    { id: 2, nickname: "행복한곰돌이", accountId: "dorrraa" },
-    { id: 3, nickname: "딸기우유", accountId: "beryyeee8" },
-    { id: 4, nickname: "바닐라라떼", accountId: "clare22" },
-  ],
-};
+import {
+  UserDto,
+  UserMeResponseDto,
+} from "app/_api/response/user.response.dto";
+import { ResponseBody } from "app/_api/response/response_dto";
+import { getCurrentUser } from "app/_api/user";
+import ResponseCode from "public/type/response_code";
 
 export default function MyPage() {
-  const [user, setUser] = useState<UserInfo>(sampleUser);
+  const [user, setUser] = useState<UserDto | null>(null);
+
+  const getCurrentUserApi = async () => {
+    await getCurrentUser().then(getCurrentUserApiResponse);
+  };
+  const getCurrentUserApiResponse = (
+    responseBody: ResponseBody<UserMeResponseDto>
+  ) => {
+    if (!responseBody) return;
+
+    const { code, message, user } = responseBody as UserMeResponseDto;
+
+    if (code == ResponseCode.SUCCESS) {
+      setUser(user);
+    } else {
+      console.log("getCurrentUser: ", message);
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUserApi();
+  }, []);
 
   return (
     <Paper
@@ -50,7 +50,7 @@ export default function MyPage() {
     >
       <MyInfo user={user} />
       <SettingList user={user} />
-      <FriendList friends={user.friends} />
+      <FriendList />
     </Paper>
   );
 }

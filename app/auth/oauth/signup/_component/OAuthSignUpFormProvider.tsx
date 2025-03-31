@@ -74,18 +74,18 @@ const OAuthSignUpFormProvider = ({
     if (code == ResponseCode.SUCCESS) {
       message = "회원가입이 완료되었습니다.";
 
-      alert(message);
+      console.log("OAuthSignUp: ", message);
       saveToken(token, expirationTime);
       setTransitionDisable(true);
       router.push("/home");
       return;
     }
-    alert(message);
+    console.log("OAuthSignUp" + message);
     router.push("/auth/signin");
   };
   const onSubmit = async (data: IOAuthSignUpForm) => {
-    console.log(data);
-    alert(JSON.stringify(data));
+    // console.log(data);
+    // console.log(JSON.stringify(data));
 
     await oauth2SignUpRequest(data).then(oauth2SignUpResponse);
   };

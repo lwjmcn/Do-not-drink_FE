@@ -1,10 +1,10 @@
 import { Stack } from "@mui/material";
-import Layout from "./_component/Layout";
+import UserMeLayout from "./_component/UserMeLayout";
 
 const Home = () => {
   return (
     <Stack direction="column" spacing={6} marginY={"auto"} marginX={2}>
-      <Layout type={"me"} />
+      <UserMeLayout />
     </Stack>
   );
 };

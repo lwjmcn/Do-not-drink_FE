@@ -7,12 +7,20 @@ import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useRouter } from "next/navigation";
 import { TransactionAddResponseDto } from "app/_api/response/expense.response.dto";
+import { addTransaction } from "app/_api/expense";
 
 const addTransactionFormSchema = z.object({
-  datetime: z.string().trim().datetime(),
-  categoryId: z.number().int().positive(),
+  datetime: z
+    .string()
+    .trim()
+    .refine((value) => !isNaN(Date.parse(value)), {
+      message: "유효한 날짜를 입력해주세요.",
+    }),
+  categoryId: z.coerce.number().int().positive(),
   name: z.string().trim().min(1, { message: "제목을 입력해주세요." }),
-  amount: z.number().int().min(0, { message: "금액을 입력해주세요." }),
+  amount: z.coerce.number().int().positive().max(100000000, {
+    message: "1억 이상은 입력할 수 없습니다.",
+  }),
   description: z
     .string()
     .trim()
@@ -46,27 +54,23 @@ const TransactionFormProvider = ({
     responseBody: ResponseBody<TransactionAddResponseDto>
   ): void => {
     if (!responseBody) return;
-    const { code } = responseBody;
+    const { code, message } = responseBody as TransactionAddResponseDto;
 
-    let message = "";
-    if (code == ResponseCode.DATABASE_ERROR) {
-      message = "데이터베이스 오류입니다.";
-      alert(message);
-      router.push("/add-transaction/fail");
-      return;
-    }
     if (code == ResponseCode.SUCCESS) {
-      message = "지출이 등록되었습니다";
-      alert(message);
+      console.log("addTransaction: ", message);
       router.push("/add-transaction/complete");
+      return;
+    } else {
+      console.log("addTransaction: ", message);
+      router.push("/add-transaction/fail");
       return;
     }
   };
   const onSubmit = async (data: IAddTransactionForm) => {
-    console.log(data);
-    alert(JSON.stringify(data));
+    // console.log(data);
+    // console.log(JSON.stringify(data));
 
-    // await addTransaction(data).then(addTransactionFormSchema);
+    await addTransaction(data).then(addTransactionResponse);
   };
 
   return (

@@ -9,7 +9,7 @@ export default function AddFriendFailModal() {
         style={{ fontSize: 60, color: "#FE9600", marginBottom: 20 }}
       />
       <Typography variant="h6" color="#717171">
-        <span style={{ color: "#FE9600" }}>찾을 수 없는 친구</span>입니다
+        친구를 <span style={{ color: "#FE9600" }}>찾을 수 없어요</span>
       </Typography>
     </AlertModal>
   );

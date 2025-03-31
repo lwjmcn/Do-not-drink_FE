@@ -10,6 +10,7 @@ export interface TransactionDto {
   description: string;
 }
 export interface TransactionListInCategoryResponseDto extends ResponseDto {
+  categoryName: string;
   transactions: TransactionDto[];
   totalPage: number;
   totalElements: number;

@@ -6,6 +6,7 @@ import {
   Typography,
   Stack,
   Divider,
+  Dialog,
 } from "@mui/material";
 import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 import { motion } from "framer-motion";
@@ -34,7 +35,11 @@ export default function ModalContainer(props: ModalContainerProps) {
 
   return (
     <>
-      <Backdrop open sx={{ zIndex: 1001, backdropFilter: "blur(5px)" }}>
+      <Backdrop
+        open
+        sx={{ zIndex: 1001, backdropFilter: "blur(5px)" }}
+        aria-hidden="false"
+      >
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

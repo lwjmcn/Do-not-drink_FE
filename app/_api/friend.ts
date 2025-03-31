@@ -1,14 +1,4 @@
-import { AxiosResponse, AxiosError } from "axios";
 import axiosInstance from "public/util/axios";
-import ResponseDto from "./response/response_dto";
-import {
-  BudgetSetRequestDto,
-  ReactToRequestDto,
-} from "./request/budget.request.dto";
-import {
-  BudgetSetResponseDto,
-  ReactToResponseDto,
-} from "./response/budget.response.dto";
 import { responseHandler, errorHandler } from "./api";
 import {
   FriendReqListResponseDto,
@@ -21,11 +11,11 @@ import {
   FriendReqResRequestDto,
 } from "./request/friend.request.dto";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`;
 
 export const getReceivedFriendRequests = async () => {
   const result = await axiosInstance
-    .get(`${API_URL}/users/me/friend_requests/received`)
+    .get(`${API_URL}/friend_requests/received`)
     .then(responseHandler<FriendReqListResponseDto>)
     .catch(errorHandler);
   return result;
@@ -33,34 +23,40 @@ export const getReceivedFriendRequests = async () => {
 
 export const requestFriend = async (requestBody: FriendReqRequestDto) => {
   const result = await axiosInstance
-    .post(`${API_URL}/users/me/friend-requests`, requestBody)
+    .post(`${API_URL}/friend-requests`, requestBody)
     .then(responseHandler<FriendReqResponseDto>)
     .catch(errorHandler);
   return result;
 };
 
-export const friendRequestSubscribe = async () => {
-  const result = await axiosInstance.get(`${API_URL}/users/me/friend-requests`);
-  // TODO sse emitter
+export const friendRequestSubscribe = () => {
+  const eventSource = new EventSource(`${API_URL}/friend-requests`);
 
-  return;
-};
+  eventSource.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+    console.log("FriendRequestEvent data:", data);
+  });
+
+  eventSource.onerror = (error) => {
+    console.error("Error occurred:", error);
+    eventSource.close(); // Close the connection on error
+  };
+}; // TODO sse
 
 export const respondToFriendRequest = async (
   requestId: number,
   requestBody: FriendReqResRequestDto
 ) => {
   const result = await axiosInstance
-    .patch(`${API_URL}/users/me/friend-requests/${requestId}`, requestBody)
+    .patch(`${API_URL}/friend-requests/${requestId}`, requestBody)
     .then(responseHandler<FriendReqResResponseDto>)
     .catch(errorHandler);
-  // TODO sse emitter
-  return;
+  return result;
 };
 
 export const getFriends = async () => {
   const result = await axiosInstance
-    .get(`${API_URL}/users/me/friends`)
+    .get(`${API_URL}/friends`)
     .then(responseHandler<FriendshipListResponseDto>)
     .catch(errorHandler);
   return result;

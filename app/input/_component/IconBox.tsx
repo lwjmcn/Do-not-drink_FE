@@ -20,10 +20,10 @@ const IconBox = ({ icon, text, href }: IconBoxProps) => {
       width={"100%"}
       height={200}
       sx={{
-        bgcolor: "#fff",
+        bgcolor: "#FFBA18",
         borderRadius: 2,
         ":hover:active": {
-          backgroundColor: "info.light",
+          backgroundColor: "#FFF6E1",
           transition: "background-color 0.3s ease",
         },
         cursor: "pointer",
@@ -33,12 +33,12 @@ const IconBox = ({ icon, text, href }: IconBoxProps) => {
       {cloneElement(icon as ReactElement<{ sx?: object }>, {
         sx: {
           fontSize: "80px",
-          color: "#000",
+          color: "#fff",
           opacity: 0.7,
         },
       })}
 
-      <Typography variant="h6" color="#000">
+      <Typography variant="h6" color="#fff">
         {text}
       </Typography>
     </Stack>
