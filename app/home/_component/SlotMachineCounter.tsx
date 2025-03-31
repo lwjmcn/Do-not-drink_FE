@@ -120,3 +120,4 @@ const Digit = memo(
     );
   }
 );
+Digit.displayName = "Digit";
