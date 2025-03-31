@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { Stack } from "@mui/material";
+import { Badge, Stack } from "@mui/material";
 
 export default function MenuButton() {
   const router = useRouter();
@@ -22,9 +22,23 @@ export default function MenuButton() {
           border: "none",
           background: "none",
           color: "#FE9600",
+          cursor: "pointer",
         }}
       >
-        <NotificationsNoneRoundedIcon />
+        <Badge
+          variant="dot"
+          invisible={false}
+          sx={{
+            "& .MuiBadge-badge": {
+              backgroundColor: "red",
+              translate: "-2px 2px",
+              minWidth: 8,
+              height: 8,
+            },
+          }}
+        >
+          <NotificationsNoneRoundedIcon />
+        </Badge>
       </button>
       {/* 기타 메뉴 */}
       <button
@@ -33,6 +47,7 @@ export default function MenuButton() {
           border: "none",
           background: "none",
           color: "#FE9600",
+          cursor: "pointer",
         }}
       >
         <MenuRoundedIcon />

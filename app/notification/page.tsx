@@ -1,3 +1,11 @@
+import BackButton from "@component/BackButton";
+import NotificationList from "./_component/NotificationList";
+
 export default function NotificationPage() {
-  return <div>Notification</div>;
+  return (
+    <>
+      <BackButton />
+      <NotificationList />
+    </>
+  );
 }
