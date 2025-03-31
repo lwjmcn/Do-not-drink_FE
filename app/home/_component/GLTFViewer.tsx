@@ -57,7 +57,7 @@ const GLTFViewer = (props: GLTFViewerProps) => {
     frontLight.position.set(0, 1, 3);
     scene.add(frontLight);
 
-    const ambientLight = new THREE.AmbientLight("background.orange", 1); // floor color
+    const ambientLight = new THREE.AmbientLight("#FFF6E1", 1); // floor color
     scene.add(ambientLight);
 
     // // shadow
