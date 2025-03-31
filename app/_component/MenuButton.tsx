@@ -14,6 +14,7 @@ export default function MenuButton() {
       position={"absolute"}
       top={20}
       right={20}
+      zIndex={1}
     >
       {/* 알림 */}
       <button
