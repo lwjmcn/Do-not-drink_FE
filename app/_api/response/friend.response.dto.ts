@@ -14,7 +14,7 @@ export interface FriendReqListResponseDto extends ResponseDto {
 
 export interface FriendReqResponseDto extends ResponseDto {} // 친구요청
 
-export interface FriendReqResResponesDto extends ResponseDto {} // 친구요청 수락/거절
+export interface FriendReqResResponseDto extends ResponseDto {} // 친구요청 수락/거절
 
 export interface FriendDto {
   userId: number;
