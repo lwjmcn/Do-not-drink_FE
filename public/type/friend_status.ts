@@ -1,4 +1,4 @@
-export enum StatusType {
+export enum FriendStatusType {
   READ = "READ",
   NOREAD = "NOREAD",
   ACCEPT = "ACCEPT",

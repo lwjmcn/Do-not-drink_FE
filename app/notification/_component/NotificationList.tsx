@@ -12,7 +12,7 @@ import AnnouncementRoundedIcon from "@mui/icons-material/AnnouncementRounded";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import { StatusType } from "public/type/status";
+import { FriendStatusType } from "public/type/friend_status";
 import NotificationItem from "./NotificationItem";
 import EmptyNotification from "./Empty";
 
@@ -21,7 +21,7 @@ interface NotificationData {
   userId: number;
   nickname: string;
   accountId: string;
-  status: StatusType;
+  status: FriendStatusType;
 }
 
 const emtpyList = [];
@@ -31,31 +31,34 @@ const friendReqList: NotificationData[] = [
     userId: 1,
     nickname: "이예진",
     accountId: "yeyin",
-    status: StatusType.READ,
+    status: FriendStatusType.READ,
   },
   {
     friendRequestId: 2,
     userId: 2,
     nickname: "이예진",
     accountId: "yeyin",
-    status: StatusType.NOREAD,
+    status: FriendStatusType.NOREAD,
   },
   {
     friendRequestId: 3,
     userId: 3,
     nickname: "이예진",
     accountId: "yeyin",
-    status: StatusType.NOREAD,
+    status: FriendStatusType.NOREAD,
   },
 ];
 
 export default function NotificationList() {
   const sortNoread = (a: NotificationData, b: NotificationData) => {
-    if (a.status === StatusType.NOREAD && b.status !== StatusType.NOREAD) {
+    if (
+      a.status === FriendStatusType.NOREAD &&
+      b.status !== FriendStatusType.NOREAD
+    ) {
       return -1; // a가 더 우선
     } else if (
-      a.status !== StatusType.NOREAD &&
-      b.status === StatusType.NOREAD
+      a.status !== FriendStatusType.NOREAD &&
+      b.status === FriendStatusType.NOREAD
     ) {
       return 1; // b가 더 우선
     } else {

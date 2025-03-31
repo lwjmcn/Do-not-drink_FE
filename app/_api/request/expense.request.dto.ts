@@ -1,4 +1,4 @@
-export interface AddExpenseRequestDto {
+export interface TransactionAddRequestDto {
   datetime: string;
   categoryId: number;
   name: string;

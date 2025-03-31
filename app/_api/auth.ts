@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import ResponseDto from "./response/response_dto";
+import axios from "axios";
 import { SocialLoginType } from "public/type/social_login";
 import {
   AccountIdCheckRequestDto,
@@ -17,25 +16,9 @@ import {
   SignInResponseDto,
   OAuthSignUpResponseDto,
 } from "./response/auth.response.dto";
-import ResponseCode from "public/type/response_code";
-import { NextResponse } from "next/server";
+import { responseHandler, errorHandler } from "./api";
 
 const AUTH_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth`;
-
-const responseHandler = <T>(response: AxiosResponse) => {
-  const responseBody: T = response.data;
-
-  const { code } = responseBody as ResponseDto;
-  if (code == ResponseCode.NO_PERMISSION) {
-    NextResponse.redirect("/auth/signin", 401);
-  }
-
-  return responseBody;
-};
-const errorHandler = (error: AxiosError) => {
-  if (!error.response || !error.response.data) return null;
-  return error.response.data as ResponseDto;
-};
 
 export const SnsSignInURL = (type: SocialLoginType) =>
   `${AUTH_API_URL}/oauth2/${type}`;

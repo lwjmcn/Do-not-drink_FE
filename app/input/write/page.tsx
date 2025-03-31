@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import Pencil from "@mui/icons-material/DriveFileRenameOutlineRounded";
-import ExpenseForm from "../_component/ExpenseForm";
-import ExpenseFormProvider from "../_component/ExpenseFormProvider";
+import TransactionForm from "../_component/TransactionForm";
+import TransactionFormProvider from "../_component/TransactionFormProvider";
 
 export default function WritePage() {
   return (
@@ -19,9 +19,9 @@ export default function WritePage() {
     >
       <Pencil sx={{ fontSize: "80px", color: "#000", opacity: 0.7 }} />
 
-      <ExpenseFormProvider>
-        <ExpenseForm />
-      </ExpenseFormProvider>
+      <TransactionFormProvider>
+        <TransactionForm />
+      </TransactionFormProvider>
     </Stack>
   );
 }

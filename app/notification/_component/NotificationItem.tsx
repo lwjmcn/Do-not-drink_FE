@@ -13,7 +13,7 @@ import AnnouncementRoundedIcon from "@mui/icons-material/AnnouncementRounded";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import { StatusType } from "public/type/status";
+import { FriendStatusType } from "public/type/friend_status";
 import { stat } from "fs";
 
 interface NotificationItemProps {
@@ -21,7 +21,7 @@ interface NotificationItemProps {
   userId: number;
   nickname: string;
   accountId: string;
-  status: StatusType;
+  status: FriendStatusType;
 }
 export default function NotificationItem({
   friendRequestId,
@@ -35,7 +35,7 @@ export default function NotificationItem({
       sx={{
         bgcolor: "#FFE6AC",
         borderRadius: 2,
-        opacity: status !== StatusType.NOREAD ? 0.6 : 1,
+        opacity: status !== FriendStatusType.NOREAD ? 0.6 : 1,
         gap: 1,
       }}
     >
@@ -46,7 +46,7 @@ export default function NotificationItem({
       <ListItemText>
         <Badge
           variant="dot"
-          invisible={status !== StatusType.NOREAD}
+          invisible={status !== FriendStatusType.NOREAD}
           sx={{
             "& .MuiBadge-badge": {
               backgroundColor: "#FE9600",

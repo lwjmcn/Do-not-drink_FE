@@ -2,7 +2,7 @@ import AlertModal from "@component/AlertModal";
 import { Typography } from "@mui/material";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 
-export default function AddFriendFailModal() {
+export default function AddTransactionFailModal() {
   return (
     <AlertModal>
       <ErrorOutlineRoundedIcon

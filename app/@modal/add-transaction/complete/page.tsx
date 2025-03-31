@@ -1,7 +1,7 @@
 import AlertModal from "@component/AlertModal";
 import { Typography } from "@mui/material";
 
-export default function AddExpenseCompleteModal() {
+export default function AddTransactionCompleteModal() {
   return (
     <AlertModal>
       <Typography variant="h6" color="#717171" textAlign="center">

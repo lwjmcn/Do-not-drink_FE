@@ -11,15 +11,15 @@ import {
 import { useFormContext } from "react-hook-form";
 import Input from "@component/Input";
 import { useRouter } from "next/navigation";
-import { IAddExpenseForm } from "./ExpenseFormProvider";
+import { IAddTransactionForm } from "./TransactionFormProvider";
 import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 import CategoryChip from "./CategoryChip";
 
-export default function ExpenseForm() {
+export default function TransactionForm() {
   const router = useRouter();
   const { setTransitionDisable } = useRouterWrapper();
 
-  const { trigger } = useFormContext<IAddExpenseForm>();
+  const { trigger } = useFormContext<IAddTransactionForm>();
 
   const onClickNext = async () => {
     // 이메일 중복 확인은 마지막에 백엔드에서 진행
