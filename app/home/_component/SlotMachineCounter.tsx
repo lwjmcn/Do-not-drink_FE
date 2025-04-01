@@ -75,7 +75,7 @@ const Digit = memo(
       <Box
         sx={{
           overflow: "hidden",
-          height: 36,
+          height: 38,
           width: digit === "," ? 8 : 24,
           position: "relative",
         }}

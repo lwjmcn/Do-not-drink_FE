@@ -1,3 +1,5 @@
+"use client";
+
 import { Stack } from "@mui/material";
 import FriendLayout from "app/home/_component/FriendLayout";
 import { useParams } from "next/navigation";

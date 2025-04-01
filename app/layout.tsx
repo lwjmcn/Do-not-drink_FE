@@ -26,7 +26,7 @@ export default function RootLayout({
             <CssBaseline enableColorScheme />
             {modal}
             <MainLayout>{children}</MainLayout>
-            <MediaSizeDisplay />
+            {/* <MediaSizeDisplay /> */}
           </AppTheme>
         </AppRouterCacheProvider>
       </body>
