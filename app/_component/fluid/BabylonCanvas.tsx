@@ -105,6 +105,8 @@ const BabylonCanvas = (
       ref={canvasRef}
       {...rest}
       style={{
+        width: "300px",
+        height: "300px",
         background: "transparent", // remove background
         outline: "none", // remove border
         WebkitTapHighlightColor: "rgba(255, 255, 255, 0)",

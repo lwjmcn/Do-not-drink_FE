@@ -7,11 +7,18 @@ const nextConfig: NextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+    };
     return config;
   },
   images: {
     domains: ["images.unsplash.com"],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

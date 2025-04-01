@@ -13,6 +13,7 @@ import ResponseCode from "public/type/response_code";
 import { getRemainingBudget, myReactionEventUrl } from "app/_api/budget";
 import { BudgetRemainingResponseDto } from "app/_api/response/budget.response.dto";
 import EmptyBudget from "./EmptyBudget";
+import BabylonView from "@component/fluid/BabylonView";
 
 export default function UserMeLayout() {
   const likes = 100;
@@ -77,8 +78,9 @@ export default function UserMeLayout() {
         <Budget remains={remains} />
         <Suspense>
           <Link href={"/category"} onClick={() => setTransitionDisable(true)}>
-            <GLTFViewer filename="orange_juice.glb" />
+            {/* <GLTFViewer filename="orange_juice.glb" /> */}
             {/* TODO 주스 테마, 주스 양 조절 */}
+            <BabylonView />
           </Link>
         </Suspense>
 
