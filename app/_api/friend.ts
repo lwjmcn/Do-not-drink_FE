@@ -23,14 +23,14 @@ export const getReceivedFriendRequests = async () => {
 
 export const requestFriend = async (requestBody: FriendReqRequestDto) => {
   const result = await axiosInstance
-    .post(`${API_URL}/friend-requests`, requestBody)
+    .post(`${API_URL}/friend-requests/`, requestBody)
     .then(responseHandler<FriendReqResponseDto>)
     .catch(errorHandler);
   return result;
 };
 
 export const friendRequestSubscribe = () => {
-  const eventSource = new EventSource(`${API_URL}/friend-requests`);
+  const eventSource = new EventSource(`${API_URL}/friend-requests/`);
 
   eventSource.addEventListener("message", (event) => {
     const data = JSON.parse(event.data);
@@ -56,7 +56,7 @@ export const respondToFriendRequest = async (
 
 export const getFriends = async () => {
   const result = await axiosInstance
-    .get(`${API_URL}/friends`)
+    .get(`${API_URL}/friends/`)
     .then(responseHandler<FriendshipListResponseDto>)
     .catch(errorHandler);
   return result;

@@ -6,7 +6,7 @@ const THEME_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/themes`;
 
 export const getAllThemes = async () => {
   const result = await axios
-    .get(`${THEME_API_URL}`)
+    .get(`${THEME_API_URL}/`)
     .then(responseHandler<ThemeFindAllResponseDto>)
     .catch(errorHandler);
   return result;
