@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
     domains: ["images.unsplash.com"],
     localPatterns: [
       {
-        pathname: "/images/**",
+        pathname: "/image/**",
         search: "",
       },
     ],
