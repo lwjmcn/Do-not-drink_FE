@@ -34,7 +34,6 @@ const nextConfig: NextConfig = {
     AUTH_KAKAO_ID: process.env.AUTH_KAKAO_ID,
     AUTH_KAKAO_SECRET: process.env.AUTH_KAKAO_SECRET,
     AUTH_URL: process.env.AUTH_URL,
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   },
 };
 

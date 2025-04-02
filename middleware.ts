@@ -30,7 +30,7 @@ const middleware = async (request: NextRequest) => {
 
 // 특정 경로에서만 middleware 실행
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: "/((?!api|static|.*\\..*|_next).*)",
 };
 
 export default middleware;
