@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: ["images.unsplash.com"],
+    localPatterns: [
+      {
+        pathname: "/images/**",
+        search: "",
+      },
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,
