@@ -23,8 +23,6 @@ const AutoCarousel = ({
 
   // 무한 스크롤
   useEffect(() => {
-    console.log("API_BASE_URL", process.env.NEXT_PUBLIC_API_BASE_URL);
-
     let animationId: number;
     let lastTimestamp = 0;
 
