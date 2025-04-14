@@ -1,6 +1,12 @@
 "use client";
 
-import { Button, Autocomplete, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Autocomplete,
+  Stack,
+  Typography,
+  MenuItem,
+} from "@mui/material";
 import Input from "@component/Input";
 import CategoryChip from "./CategoryChip";
 import { getCategories } from "app/_api/expense";
@@ -98,9 +104,9 @@ export default function TransactionForm() {
           slotProps={{ inputLabel: { shrink: true } }}
         >
           {categoryList.map((item, index) => (
-            <option key={index} value={item.categoryId}>
+            <MenuItem key={index} value={item.categoryId}>
               {item.name}
-            </option>
+            </MenuItem>
           ))}
         </Input>
         <Input
