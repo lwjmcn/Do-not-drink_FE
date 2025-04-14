@@ -30,7 +30,8 @@ const addTransactionFormSchema = z.object({
 export type IAddTransactionForm = z.infer<typeof addTransactionFormSchema>;
 
 const defaultValues: IAddTransactionForm = {
-  datetime: new Date().toLocaleString("ko-KR"),
+  // YYYY-MM-DDTHH:mm
+  datetime: new Date().toISOString().slice(0, 16),
   categoryId: 1,
   name: "",
   amount: 0,
