@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
   Typography,
 } from "@mui/material";
 import { getTransactionsInCategory } from "app/_api/expense";
@@ -44,22 +45,27 @@ const History = () => {
   };
 
   useEffect(() => {
+    console.log(categoryId);
+    if (categoryId == undefined) return;
+
     getTransactionsInCategoryApi();
-  }, []);
+  }, [categoryId]);
 
   return (
     <Box padding={2}>
-      <Box>
+      <Box paddingY={2}>
         <Typography fontSize={60} marginLeft={-1}>
           🥄
         </Typography>
         <Typography variant={"h2"}>{categoryName}</Typography>
         <Typography variant="caption" color={"text.secondary"}>
           총{" "}
-          {transactionList
-            .map((item) => item.amount)
-            .reduce((a, b) => a + b)
-            .toLocaleString()}
+          {transactionList.length == 0
+            ? 0
+            : transactionList
+                .map((item) => item.amount)
+                .reduce((a, b) => a + b)
+                .toLocaleString()}
           원을 사용했어요.
         </Typography>
       </Box>
@@ -72,33 +78,41 @@ const History = () => {
         }}
       />
       <List>
-        {transactionList
-          .sort(
-            (a, b) =>
-              new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
-          )
-          .map((item) => (
-            <ListItem
-              key={item.transactionId}
-              sx={{
-                paddingX: 0,
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-              divider
-              secondaryAction={
-                <ListItemText
-                  primary={`${item.amount.toLocaleString()}
+        {transactionList.length == 0 ? (
+          <Stack alignItems={"center"} paddingY={10}>
+            <Typography variant="caption" color="#717171">
+              아직 지출 내역이 없어요.
+            </Typography>
+          </Stack>
+        ) : (
+          transactionList
+            .sort(
+              (a, b) =>
+                new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+            )
+            .map((item) => (
+              <ListItem
+                key={item.transactionId}
+                sx={{
+                  paddingX: 0,
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+                divider
+                secondaryAction={
+                  <ListItemText
+                    primary={`${item.amount.toLocaleString()}
                 원`}
+                  />
+                }
+              >
+                <ListItemText
+                  primary={item.name}
+                  secondary={item.datetime.replace(/-/g, ".")}
                 />
-              }
-            >
-              <ListItemText
-                primary={item.name}
-                secondary={item.datetime.replace(/-/g, ".")}
-              />
-            </ListItem>
-          ))}
+              </ListItem>
+            ))
+        )}
       </List>
     </Box>
   );
