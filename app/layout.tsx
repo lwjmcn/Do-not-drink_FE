@@ -5,6 +5,7 @@ import MainLayout from "@component/MainLayout";
 import MediaSizeDisplay from "@component/media_query/MedaiSizeDisplay";
 import AppTheme from "public/style/AppTheme";
 import { CssBaseline } from "@mui/material";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Budge",
@@ -24,6 +25,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <AppTheme>
             <CssBaseline enableColorScheme />
+            <Analytics />
             {modal}
             <MainLayout>{children}</MainLayout>
             {/* <MediaSizeDisplay /> */}
