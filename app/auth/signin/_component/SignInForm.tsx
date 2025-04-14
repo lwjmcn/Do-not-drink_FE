@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,8 @@ import { saveToken } from "public/util/cookies";
 import { useRouterWrapper } from "app/home/_component/page_transition/RouterWrapperContext";
 
 const SignInForm = () => {
+  const [loading, setLoading] = useState(false);
+
   const { handleSubmit, control } = useForm<SignInRequestDto>({
     mode: "onBlur",
     defaultValues: {
@@ -52,11 +54,13 @@ const SignInForm = () => {
     }
 
     console.log("SignIn: ", message);
+    setLoading(false);
   };
 
   const onSubmit = async (data: SignInRequestDto) => {
     // console.log(data);
     // console.log(JSON.stringify(data));
+    setLoading(true);
 
     await signInRequest(data).then(signInResponse);
   };
@@ -102,12 +106,15 @@ const SignInForm = () => {
           label="자동 로그인"
         />
       </Stack> */}
-
-      <Button type="submit" variant="text" sx={{ bgcolor: "#fff" }}>
-        <Typography variant="button" color="#000">
-          로그인
-        </Typography>
-      </Button>
+      {loading ? (
+        <CircularProgress sx={{ alignSelf: "center" }} />
+      ) : (
+        <Button type="submit" variant="text" sx={{ bgcolor: "#fff" }}>
+          <Typography variant="button" color="#000">
+            로그인
+          </Typography>
+        </Button>
+      )}
     </Stack>
   );
 };
