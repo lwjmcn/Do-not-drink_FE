@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import ReactionButton from "./ReactionButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
