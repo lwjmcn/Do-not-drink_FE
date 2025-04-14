@@ -8,8 +8,10 @@ import { BudgetSetRequestDto } from "app/_api/request/budget.request.dto";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
 import { useRouter } from "next/navigation";
+import { track } from "@vercel/analytics";
 
 export default function SetBudgetModal() {
+  const [AorB, setAorB] = useState<"A" | "B">("B");
   const router = useRouter();
 
   const [budgetInput, setBudgetInput] = useState<number>(0);
@@ -37,44 +39,88 @@ export default function SetBudgetModal() {
   };
 
   const onClickPositive = () => {
+    track("set budget", {
+      budget: budgetInput,
+      timestamp: new Date().toISOString(),
+    });
     setBudgetApi({ budget: budgetInput });
   };
 
-  return (
-    <ModalContainer onClickPositive={onClickPositive}>
-      <Stack
-        direction="column"
-        spacing={2}
-        marginBottom={2}
-        marginX={1}
-        alignItems={"center"}
-      >
-        <Typography variant="h6" color="#717171">
-          이번 달 <span style={{ color: "#FE9600" }}>예산</span>은 얼마인가요?
-        </Typography>
-        <TextField
-          variant="standard"
-          size="medium"
-          value={budgetInput}
-          onChange={(e) => setBudgetInput(Number(e.target.value))}
-          required={true}
-          error={error}
-          helperText={error ? errorMessage : ""}
-          FormHelperTextProps={{
-            sx: { marginLeft: 0 },
-          }}
-          InputProps={{
-            endAdornment: <Typography>원</Typography>,
-          }}
-          inputProps={{
-            inputMode: "numeric",
-            pattern: "[0-9]*",
-          }}
-          sx={{
-            width: "120px",
-          }}
-        />
-      </Stack>
-    </ModalContainer>
-  );
+  if (AorB == "A") {
+    return (
+      <ModalContainer onClickPositive={onClickPositive}>
+        <Stack
+          direction="row"
+          spacing={2}
+          marginBottom={2}
+          marginX={1}
+          alignItems={"center"}
+        >
+          <Typography variant="h6" color="#717171">
+            당월 예산:
+          </Typography>
+          <TextField
+            variant="standard"
+            size="medium"
+            value={budgetInput}
+            onChange={(e) => setBudgetInput(Number(e.target.value))}
+            required={true}
+            error={error}
+            helperText={error ? errorMessage : ""}
+            FormHelperTextProps={{
+              sx: { marginLeft: 0 },
+            }}
+            InputProps={{
+              endAdornment: <Typography>원</Typography>,
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            sx={{
+              width: "120px",
+            }}
+          />
+        </Stack>
+      </ModalContainer>
+    );
+  } else {
+    return (
+      <ModalContainer onClickPositive={onClickPositive}>
+        <Stack
+          direction="column"
+          spacing={2}
+          marginBottom={2}
+          marginX={1}
+          alignItems={"center"}
+        >
+          <Typography variant="h6" color="#717171">
+            이번 달 <span style={{ color: "#FE9600" }}>예산</span>은 얼마인가요?
+          </Typography>
+          <TextField
+            variant="standard"
+            size="medium"
+            value={budgetInput}
+            onChange={(e) => setBudgetInput(Number(e.target.value))}
+            required={true}
+            error={error}
+            helperText={error ? errorMessage : ""}
+            FormHelperTextProps={{
+              sx: { marginLeft: 0 },
+            }}
+            InputProps={{
+              endAdornment: <Typography>원</Typography>,
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+            sx={{
+              width: "120px",
+            }}
+          />
+        </Stack>
+      </ModalContainer>
+    );
+  }
 }

@@ -19,6 +19,7 @@
     "@mui/material": "^6.4.2",
     "@mui/material-nextjs": "^6.4.2",
     "@svgr/webpack": "^8.1.0",
+    "@vercel/analytics": "^1.5.0",
     "ammo.js": "github:kripken/ammo.js",
     "ammojs-typed": "^1.0.6",
     "axios": "^1.7.9",

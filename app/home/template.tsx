@@ -16,6 +16,6 @@ export default function HomeTemplate({
       setTransitionDisable(false);
     }, 500);
   }, []);
-
-  return <PageTransition>{children}</PageTransition>;
+  return children;
+  //  return (<PageTransition>{children}</PageTransition>);
 }

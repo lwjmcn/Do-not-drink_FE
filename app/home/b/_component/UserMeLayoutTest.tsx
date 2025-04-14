@@ -1,25 +1,18 @@
 "use client";
 
 import { Button, CircularProgress, Stack, Typography } from "@mui/material";
-import ReactionButton from "./ReactionButton";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
-import Budget from "./Budget";
-import { useRouterWrapper } from "./page_transition/RouterWrapperContext";
-import GLTFViewer from "./GLTFViewer";
+import { useEffect, useState } from "react";
+import { useRouterWrapper } from "../../_component/page_transition/RouterWrapperContext";
 import { ResponseBody } from "app/_api/response/response_dto";
 import ResponseCode from "public/type/response_code";
-import { getRemainingBudget, myReactionEventUrl } from "app/_api/budget";
+import { getRemainingBudget } from "app/_api/budget";
 import { BudgetRemainingResponseDto } from "app/_api/response/budget.response.dto";
-import EmptyBudget from "./EmptyBudget";
-import BabylonView from "@component/fluid/BabylonView";
+import EmptyBudget from "../../_component/EmptyBudget";
+import ExpenseList from "./ExpenseList";
 import { track } from "@vercel/analytics";
 
-export default function UserMeLayout() {
-  const likes = 100;
-  const dislikes = 4;
-
+export default function UserMeLayoutTest() {
   const router = useRouter();
   const { setTransitionDisable } = useRouterWrapper();
 
@@ -64,7 +57,7 @@ export default function UserMeLayout() {
     // return () => {
     //   eventSource.close();
     // }; // TODO sse error --> authorization header 추가필요
-    track("home A", { timestamp: new Date().toISOString() });
+    track("home B", { timestamp: new Date().toISOString() });
   }, [remains]);
 
   if (remains === undefined) {
@@ -73,44 +66,53 @@ export default function UserMeLayout() {
         <CircularProgress />
       </Stack>
     );
-  } else if (remains == null) {
-    return <EmptyBudget />;
   } else {
     return (
-      <Stack
-        direction={"column"}
-        spacing={2}
-        marginY={"auto"}
-        alignItems={"center"}
-      >
-        <Budget remains={remains} />
-        <Suspense>
-          <Link href={"/category"} onClick={() => setTransitionDisable(true)}>
-            {/* <GLTFViewer filename="orange_juice.glb" /> */}
-            {/* TODO 주스 테마, 주스 양 조절 */}
-            <BabylonView />
-          </Link>
-        </Suspense>
-
-        <Stack direction="row" spacing={2} alignItems={"center"}>
-          <ReactionButton isLike={true} count={likes} enabled={false} />
-          <Button
-            variant="text"
-            onClick={() => router.push("/input")}
-            sx={{
-              width: 80,
-              height: 80,
-              borderRadius: "50%",
-              bgcolor: "#FFD67D",
-              fontSize: 16,
+      <Stack direction={"column"} alignItems={"center"}>
+        {/* 예산, 지출, 합계 */}
+        <Stack direction={"row"} width={"100%"}>
+          <Stack
+            direction={"column"}
+            spacing={0.5}
+            alignItems={"center"}
+            width={"33%"}
+            onClick={() => {
+              track("home B set budget click", {
+                timestamp: new Date().toISOString(),
+              });
+              router.push("/set-budget");
             }}
           >
-            <Typography variant="button" color="#fff">
-              한 입
+            <Typography variant="body2">예산</Typography>
+            <Typography variant="body1" fontWeight={600} color="#F31D64">
+              {remains == null ? "?" : 500000}원
             </Typography>
-          </Button>
-          <ReactionButton isLike={false} count={dislikes} enabled={false} />
+          </Stack>
+          <Stack
+            direction={"column"}
+            spacing={0.5}
+            alignItems={"center"}
+            width={"33%"}
+          >
+            <Typography variant="body2">지출</Typography>
+            <Typography variant="body1" fontWeight={600} color="#0095EF">
+              {remains == null ? "?" : 500000 - remains}원
+            </Typography>
+          </Stack>
+          <Stack
+            direction={"column"}
+            spacing={0.5}
+            alignItems={"center"}
+            width={"33%"}
+          >
+            <Typography variant="body2">합계</Typography>
+            <Typography variant="body1" fontWeight={600}>
+              {remains == null ? "?" : remains}원
+            </Typography>
+          </Stack>
         </Stack>
+
+        <ExpenseList />
       </Stack>
     );
   }
