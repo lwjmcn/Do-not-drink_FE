@@ -65,7 +65,13 @@ export default function UserMeLayout() {
     // }; // TODO sse error --> authorization header 추가필요
   }, [remains]);
 
-  if (!remains) {
+  if (remains === undefined) {
+    return (
+      <Stack alignItems={"center"}>
+        <CircularProgress />
+      </Stack>
+    );
+  } else if (remains == null) {
     return <EmptyBudget />;
   } else {
     return (
