@@ -18,7 +18,6 @@ export default function CarouselLayout({
   const [friendCount, setFriendCount] = useState<number>(0);
   const { id } = useParams();
   const pathname = usePathname();
-  const friend_count: number = 3;
 
   const getFriendsApi = async () => {
     await getFriends().then(getFriendsApiResponse);
@@ -48,13 +47,13 @@ export default function CarouselLayout({
     ? friendCount === 0
       ? `/home/friend/add`
       : `/home/friend/1`
-    : pathname.endsWith(`/friend/${friend_count}`)
+    : pathname.endsWith(`/friend/${friendCount}`)
     ? `/home/friend/add`
     : `/home/friend/${parseInt(id as string) + 1}`;
   const prevHref = pathname.endsWith("/add")
     ? friendCount === 0
       ? `/home`
-      : `/home/friend/${friend_count}`
+      : `/home/friend/${friendCount}`
     : pathname.endsWith("/home")
     ? `/home/friend/add`
     : pathname.endsWith(`/friend/1`)
