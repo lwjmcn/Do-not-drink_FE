@@ -90,7 +90,19 @@ export default function TransactionForm() {
             },
           }}
         /> */}
-        <Input name="categoryId" label="카테고리" type="number" />
+        <Input
+          name="categoryId"
+          label="카테고리"
+          type="number"
+          select
+          slotProps={{ inputLabel: { shrink: true } }}
+        >
+          {categoryList.map((item, index) => (
+            <option key={index} value={item.categoryId}>
+              {item.name}
+            </option>
+          ))}
+        </Input>
         <Input
           name="name"
           label="제목"
